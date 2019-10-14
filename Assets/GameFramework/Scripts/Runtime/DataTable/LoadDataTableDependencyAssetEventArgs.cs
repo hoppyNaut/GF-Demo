@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -16,12 +16,12 @@ namespace UnityGameFramework.Runtime
     public sealed class LoadDataTableDependencyAssetEventArgs : GameEventArgs
     {
         /// <summary>
-        /// 加载数据表时加载依赖资源事件编号。
+        /// 加载数据表失败事件编号。
         /// </summary>
         public static readonly int EventId = typeof(LoadDataTableDependencyAssetEventArgs).GetHashCode();
 
         /// <summary>
-        /// 获取加载数据表时加载依赖资源事件编号。
+        /// 获取加载数据表失败事件编号。
         /// </summary>
         public override int Id
         {

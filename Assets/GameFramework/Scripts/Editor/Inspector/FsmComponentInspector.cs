@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -27,7 +27,7 @@ namespace UnityGameFramework.Editor
 
             FsmComponent t = (FsmComponent)target;
 
-            if (IsPrefabInHierarchy(t.gameObject))
+            if (PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
                 EditorGUILayout.LabelField("FSM Count", t.Count.ToString());
 
@@ -43,11 +43,12 @@ namespace UnityGameFramework.Editor
 
         private void OnEnable()
         {
+
         }
 
         private void DrawFsm(FsmBase fsm)
         {
-            EditorGUILayout.LabelField(Utility.Text.GetFullName(fsm.OwnerType, fsm.Name), fsm.IsRunning ? Utility.Text.Format("{0}, {1} s", fsm.CurrentStateName, fsm.CurrentStateTime.ToString("F1")) : (fsm.IsDestroyed ? "Destroyed" : "Not Running"));
+            EditorGUILayout.LabelField(Utility.Text.GetFullName(fsm.OwnerType, fsm.Name), fsm.IsRunning ? string.Format("{0}, {1} s", fsm.CurrentStateName, fsm.CurrentStateTime.ToString("F1")) : (fsm.IsDestroyed ? "Destroyed" : "Not Running"));
         }
     }
 }

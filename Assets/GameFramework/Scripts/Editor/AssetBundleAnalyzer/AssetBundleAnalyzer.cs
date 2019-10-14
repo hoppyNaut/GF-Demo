@@ -1,11 +1,10 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -43,11 +42,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         private Vector2 m_ScatteredAssetsScroll = Vector2.zero;
         private Vector2 m_HostAssetsScroll = Vector2.zero;
 
-        private int m_CircularDependencyCount = 0;
-        private string[][] m_CachedCircularDependencyDatas = null;
-        private Vector2 m_CircularDependencyScroll = Vector2.zero;
-
-        [MenuItem("Game Framework/AssetBundle Tools/AssetBundle Analyzer", false, 43)]
+        [MenuItem("Game Framework/AssetBundle Tools/AssetBundle Analyzer", false, 33)]
         private static void Open()
         {
             AssetBundleAnalyzer window = GetWindow<AssetBundleAnalyzer>(true, "AssetBundle Analyzer", true);
@@ -87,10 +82,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             m_ScatteredAssetsFilter = null;
             m_ScatteredAssetsScroll = Vector2.zero;
             m_HostAssetsScroll = Vector2.zero;
-
-            m_CircularDependencyCount = 0;
-            m_CachedCircularDependencyDatas = null;
-            m_CircularDependencyScroll = Vector2.zero;
         }
 
         private void OnGUI()
@@ -98,7 +89,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             EditorGUILayout.BeginVertical(GUILayout.Width(position.width), GUILayout.Height(position.height));
             {
                 GUILayout.Space(5f);
-                int toolbarIndex = GUILayout.Toolbar(m_ToolbarIndex, new string[] { "Summary", "Asset Dependency Viewer", "Scattered Asset Viewer", "Circular Dependency Viewer" }, GUILayout.Height(30f));
+                int toolbarIndex = GUILayout.Toolbar(m_ToolbarIndex, new string[] { "Summary", "Asset Dependency Viewer", "Scattered Asset Viewer" }, GUILayout.Height(30f));
                 if (toolbarIndex != m_ToolbarIndex)
                 {
                     m_ToolbarIndex = toolbarIndex;
@@ -110,17 +101,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     case 0:
                         DrawSummary();
                         break;
-
                     case 1:
                         DrawAssetDependencyViewer();
                         break;
-
                     case 2:
                         DrawScatteredAssetViewer();
-                        break;
-
-                    case 3:
-                        DrawCircularDependencyViewer();
                         break;
                 }
             }
@@ -152,8 +137,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     m_Analyzed = true;
                     m_AssetCount = m_Controller.GetAssetNames().Length;
                     m_ScatteredAssetCount = m_Controller.GetScatteredAssetNames().Length;
-                    m_CachedCircularDependencyDatas = m_Controller.GetCircularDependencyDatas();
-                    m_CircularDependencyCount = m_CachedCircularDependencyDatas.Length;
                     OnAssetsOrderOrFilterChanged();
                     OnScatteredAssetsOrderOrFilterChanged();
                 }
@@ -186,11 +169,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     string title = null;
                     if (string.IsNullOrEmpty(m_AssetsFilter))
                     {
-                        title = Utility.Text.Format("Assets In AssetBundles ({0})", m_AssetCount.ToString());
+                        title = string.Format("Assets In AssetBundles ({0})", m_AssetCount.ToString());
                     }
                     else
                     {
-                        title = Utility.Text.Format("Assets In AssetBundles ({0}/{1})", m_CachedAssetNames.Length.ToString(), m_AssetCount.ToString());
+                        title = string.Format("Assets In AssetBundles ({0}/{1})", m_CachedAssetNames.Length.ToString(), m_AssetCount.ToString());
                     }
                     EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
                     EditorGUILayout.BeginVertical("box", GUILayout.Height(position.height - 150f));
@@ -249,7 +232,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 EditorGUILayout.BeginVertical(GUILayout.Width(position.width * 0.6f - 14f));
                 {
                     GUILayout.Space(5f);
-                    EditorGUILayout.LabelField(Utility.Text.Format("Dependency AssetBundles ({0})", m_SelectedDependencyData.DependencyAssetBundleCount.ToString()), EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(string.Format("Dependency AssetBundles ({0})", m_SelectedDependencyData.DependencyAssetBundleCount.ToString()), EditorStyles.boldLabel);
                     EditorGUILayout.BeginVertical("box", GUILayout.Height(position.height * 0.2f));
                     {
                         m_DependencyAssetsScroll = EditorGUILayout.BeginScrollView(m_DependencyAssetsScroll);
@@ -263,7 +246,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                         EditorGUILayout.EndScrollView();
                     }
                     EditorGUILayout.EndVertical();
-                    EditorGUILayout.LabelField(Utility.Text.Format("Dependency Assets ({0})", m_SelectedDependencyData.DependencyAssetCount.ToString()), EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(string.Format("Dependency Assets ({0})", m_SelectedDependencyData.DependencyAssetCount.ToString()), EditorStyles.boldLabel);
                     EditorGUILayout.BeginVertical("box", GUILayout.Height(position.height * 0.3f));
                     {
                         m_DependencyAssetBundlesScroll = EditorGUILayout.BeginScrollView(m_DependencyAssetBundlesScroll);
@@ -288,7 +271,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                         EditorGUILayout.EndScrollView();
                     }
                     EditorGUILayout.EndVertical();
-                    EditorGUILayout.LabelField(Utility.Text.Format("Scattered Dependency Assets ({0})", m_SelectedDependencyData.ScatteredDependencyAssetCount.ToString()), EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(string.Format("Scattered Dependency Assets ({0})", m_SelectedDependencyData.ScatteredDependencyAssetCount.ToString()), EditorStyles.boldLabel);
                     EditorGUILayout.BeginVertical("box", GUILayout.Height(position.height * 0.5f - 116f));
                     {
                         m_ScatteredDependencyAssetsScroll = EditorGUILayout.BeginScrollView(m_ScatteredDependencyAssetsScroll);
@@ -311,7 +294,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                                         }
                                     }
                                     EditorGUI.EndDisabledGroup();
-                                    GUILayout.Label(count > 1 ? Utility.Text.Format("{0} ({1})", scatteredDependencyAssetName, count.ToString()) : scatteredDependencyAssetName);
+                                    GUILayout.Label(count > 1 ? string.Format("{0} ({1})", scatteredDependencyAssetName, count.ToString()) : scatteredDependencyAssetName);
                                 }
                                 EditorGUILayout.EndHorizontal();
                             }
@@ -342,11 +325,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     string title = null;
                     if (string.IsNullOrEmpty(m_ScatteredAssetsFilter))
                     {
-                        title = Utility.Text.Format("Scattered Assets ({0})", m_ScatteredAssetCount.ToString());
+                        title = string.Format("Scattered Assets ({0})", m_ScatteredAssetCount.ToString());
                     }
                     else
                     {
-                        title = Utility.Text.Format("Scattered Assets ({0}/{1})", m_CachedScatteredAssetNames.Length.ToString(), m_ScatteredAssetCount.ToString());
+                        title = string.Format("Scattered Assets ({0}/{1})", m_CachedScatteredAssetNames.Length.ToString(), m_ScatteredAssetCount.ToString());
                     }
                     EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
                     EditorGUILayout.BeginVertical("box", GUILayout.Height(position.height - 132f));
@@ -404,7 +387,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 EditorGUILayout.BeginVertical(GUILayout.Width(position.width * 0.6f - 14f));
                 {
                     GUILayout.Space(5f);
-                    EditorGUILayout.LabelField(Utility.Text.Format("Host Assets ({0})", m_SelectedHostAssets.Length.ToString()), EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(string.Format("Host Assets ({0})", m_SelectedHostAssets.Length.ToString()), EditorStyles.boldLabel);
                     EditorGUILayout.BeginVertical("box", GUILayout.Height(position.height - 68f));
                     {
                         m_HostAssetsScroll = EditorGUILayout.BeginScrollView(m_HostAssetsScroll);
@@ -422,7 +405,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                                         GUI.FocusControl(null);
                                     }
 
-                                    GUILayout.Label(Utility.Text.Format("{0} [{1}]", hostAsset.Name, hostAsset.AssetBundle.FullName));
+                                    GUILayout.Label(string.Format("{0} [{1}]", hostAsset.Name, hostAsset.AssetBundle.FullName));
                                 }
                                 EditorGUILayout.EndHorizontal();
                             }
@@ -430,57 +413,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                         EditorGUILayout.EndScrollView();
                     }
                     EditorGUILayout.EndVertical();
-                }
-                EditorGUILayout.EndVertical();
-            }
-            EditorGUILayout.EndHorizontal();
-        }
-
-        private void DrawCircularDependencyViewer()
-        {
-            if (!m_Analyzed)
-            {
-                DrawAnalyzeButton();
-                return;
-            }
-
-            EditorGUILayout.BeginHorizontal();
-            {
-                GUILayout.Space(5f);
-                EditorGUILayout.BeginVertical();
-                {
-                    GUILayout.Space(5f);
-                    EditorGUILayout.LabelField(Utility.Text.Format("Circular Dependency ({0})", m_CircularDependencyCount.ToString()), EditorStyles.boldLabel);
-                    m_CircularDependencyScroll = EditorGUILayout.BeginScrollView(m_CircularDependencyScroll);
-                    {
-                        int count = 0;
-                        foreach (string[] circularDependencyData in m_CachedCircularDependencyDatas)
-                        {
-                            GUILayout.Label(Utility.Text.Format("{0}) {1}", (++count).ToString(), circularDependencyData[circularDependencyData.Length - 1]), EditorStyles.boldLabel);
-                            EditorGUILayout.BeginVertical("box");
-                            {
-                                foreach (string circularDependency in circularDependencyData)
-                                {
-                                    EditorGUILayout.BeginHorizontal();
-                                    {
-                                        GUILayout.Label(circularDependency);
-                                        if (GUILayout.Button("GO", GUILayout.Width(30f)))
-                                        {
-                                            m_SelectedAssetName = circularDependency;
-                                            m_SelectedAssetIndex = (new List<string>(m_CachedAssetNames)).IndexOf(m_SelectedAssetName);
-                                            m_SelectedDependencyData = m_Controller.GetDependencyData(m_SelectedAssetName);
-                                            m_ToolbarIndex = 1;
-                                            GUI.FocusControl(null);
-                                        }
-                                    }
-                                    EditorGUILayout.EndHorizontal();
-                                }
-                            }
-                            EditorGUILayout.EndVertical();
-                            GUILayout.Space(5f);
-                        }
-                    }
-                    EditorGUILayout.EndScrollView();
                 }
                 EditorGUILayout.EndVertical();
             }
@@ -507,12 +439,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
         private void OnLoadingAssetBundle(int index, int count)
         {
-            EditorUtility.DisplayProgressBar("Loading AssetBundles", Utility.Text.Format("Loading AssetBundles, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
+            EditorUtility.DisplayProgressBar("Loading AssetBundles", string.Format("Loading AssetBundles, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
         }
 
         private void OnLoadingAsset(int index, int count)
         {
-            EditorUtility.DisplayProgressBar("Loading Assets", Utility.Text.Format("Loading assets, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
+            EditorUtility.DisplayProgressBar("Loading Assets", string.Format("Loading assets, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
         }
 
         private void OnLoadCompleted()
@@ -522,7 +454,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
         private void OnAnalyzingAsset(int index, int count)
         {
-            EditorUtility.DisplayProgressBar("Analyzing assets", Utility.Text.Format("Analyzing assets, {0}/{1} analyzed.", index.ToString(), count.ToString()), (float)index / count);
+            EditorUtility.DisplayProgressBar("Analyzing assets", string.Format("Analyzing assets, {0}/{1} analyzed.", index.ToString(), count.ToString()), (float)index / count);
         }
 
         private void OnAnalyzeCompleted()

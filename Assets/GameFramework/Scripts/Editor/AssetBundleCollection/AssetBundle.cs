@@ -1,11 +1,10 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using System.Collections.Generic;
 
 namespace UnityGameFramework.Editor.AssetBundleTools
@@ -13,26 +12,19 @@ namespace UnityGameFramework.Editor.AssetBundleTools
     /// <summary>
     /// 资源包。
     /// </summary>
-    public sealed class AssetBundle
+    internal sealed class AssetBundle
     {
         private readonly List<Asset> m_Assets;
-        private readonly List<string> m_ResourceGroups;
 
-        private AssetBundle(string name, string variant, AssetBundleLoadType loadType, bool packed, string[] resourceGroups)
+        private AssetBundle(string name, string variant, AssetBundleLoadType loadType, bool packed)
         {
             m_Assets = new List<Asset>();
-            m_ResourceGroups = new List<string>();
 
             Name = name;
             Variant = variant;
             Type = AssetBundleType.Unknown;
             LoadType = loadType;
             Packed = packed;
-
-            foreach (string resourceGroup in resourceGroups)
-            {
-                AddResourceGroup(resourceGroup);
-            }
         }
 
         public string Name
@@ -51,7 +43,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         {
             get
             {
-                return Variant != null ? Utility.Text.Format("{0}.{1}", Name, Variant) : Name;
+                return Variant != null ? string.Format("{0}.{1}", Name, Variant) : Name;
             }
         }
 
@@ -73,9 +65,9 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             private set;
         }
 
-        public static AssetBundle Create(string name, string variant, AssetBundleLoadType loadType, bool packed, string[] resourceGroups)
+        public static AssetBundle Create(string name, string variant, AssetBundleLoadType loadType, bool packed)
         {
-            return new AssetBundle(name, variant, loadType, packed, resourceGroups);
+            return new AssetBundle(name, variant, loadType, packed);
         }
 
         public Asset[] GetAssets()
@@ -122,47 +114,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             }
         }
 
-        public string[] GetResourceGroups()
-        {
-            return m_ResourceGroups.ToArray();
-        }
-
-        public bool HasResourceGroup(string resourceGroup)
-        {
-            if (string.IsNullOrEmpty(resourceGroup))
-            {
-                return false;
-            }
-
-            return m_ResourceGroups.Contains(resourceGroup);
-        }
-
-        public void AddResourceGroup(string resourceGroup)
-        {
-            if (string.IsNullOrEmpty(resourceGroup))
-            {
-                return;
-            }
-
-            if (m_ResourceGroups.Contains(resourceGroup))
-            {
-                return;
-            }
-
-            m_ResourceGroups.Add(resourceGroup);
-            m_ResourceGroups.Sort();
-        }
-
-        public bool RemoveResourceGroup(string resourceGroup)
-        {
-            if (string.IsNullOrEmpty(resourceGroup))
-            {
-                return false;
-            }
-
-            return m_ResourceGroups.Remove(resourceGroup);
-        }
-
         public void Clear()
         {
             foreach (Asset asset in m_Assets)
@@ -171,7 +122,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             }
 
             m_Assets.Clear();
-            m_ResourceGroups.Clear();
         }
 
         private int AssetComparer(Asset a, Asset b)

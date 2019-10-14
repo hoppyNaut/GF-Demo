@@ -1,11 +1,10 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using GameFramework.Event;
 
 namespace UnityGameFramework.Runtime
@@ -50,15 +49,6 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取字典加载方式。
-        /// </summary>
-        public LoadType LoadType
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// 获取错误信息。
         /// </summary>
         public string ErrorMessage
@@ -83,7 +73,6 @@ namespace UnityGameFramework.Runtime
         {
             DictionaryName = default(string);
             DictionaryAssetName = default(string);
-            LoadType = default(LoadType);
             ErrorMessage = default(string);
             UserData = default(object);
         }
@@ -98,7 +87,6 @@ namespace UnityGameFramework.Runtime
             LoadDictionaryInfo loadDictionaryInfo = (LoadDictionaryInfo)e.UserData;
             DictionaryName = loadDictionaryInfo.DictionaryName;
             DictionaryAssetName = e.DictionaryAssetName;
-            LoadType = e.LoadType;
             ErrorMessage = e.ErrorMessage;
             UserData = loadDictionaryInfo.UserData;
 

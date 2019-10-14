@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -14,8 +14,6 @@ namespace UnityGameFramework.Editor
     [CustomEditor(typeof(ResourceComponent))]
     internal sealed class ResourceComponentInspector : GameFrameworkInspector
     {
-        private static readonly string[] ResourceModeNames = new string[] { "Package", "Updatable" };
-
         private SerializedProperty m_ResourceMode = null;
         private SerializedProperty m_ReadWritePathType = null;
         private SerializedProperty m_UnloadUnusedAssetsInterval = null;
@@ -28,14 +26,13 @@ namespace UnityGameFramework.Editor
         private SerializedProperty m_ResourceExpireTime = null;
         private SerializedProperty m_ResourcePriority = null;
         private SerializedProperty m_UpdatePrefixUri = null;
-        private SerializedProperty m_UpdateFileCacheLength = null;
-        private SerializedProperty m_GenerateReadWriteListLength = null;
         private SerializedProperty m_UpdateRetryCount = null;
         private SerializedProperty m_InstanceRoot = null;
         private SerializedProperty m_LoadResourceAgentHelperCount = null;
 
         private FieldInfo m_EditorResourceModeFieldInfo = null;
 
+        private string[] m_ResourceModeNames = new string[] { "Package", "Updatable" };
         private int m_ResourceModeIndex = 0;
         private HelperInfo<ResourceHelperBase> m_ResourceHelperInfo = new HelperInfo<ResourceHelperBase>("Resource");
         private HelperInfo<LoadResourceAgentHelperBase> m_LoadResourceAgentHelperInfo = new HelperInfo<LoadResourceAgentHelperBase>("LoadResourceAgent");
@@ -57,13 +54,13 @@ namespace UnityGameFramework.Editor
 
             EditorGUI.BeginDisabledGroup(EditorApplication.isPlayingOrWillChangePlaymode);
             {
-                if (EditorApplication.isPlaying && IsPrefabInHierarchy(t.gameObject))
+                if (EditorApplication.isPlaying && PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
                 {
                     EditorGUILayout.EnumPopup("Resource Mode", t.ResourceMode);
                 }
                 else
                 {
-                    int selectedIndex = EditorGUILayout.Popup("Resource Mode", m_ResourceModeIndex, ResourceModeNames);
+                    int selectedIndex = EditorGUILayout.Popup("Resource Mode", m_ResourceModeIndex, m_ResourceModeNames);
                     if (selectedIndex != m_ResourceModeIndex)
                     {
                         m_ResourceModeIndex = selectedIndex;
@@ -208,42 +205,16 @@ namespace UnityGameFramework.Editor
                         }
                     }
 
-                    int updateFileCacheLength = EditorGUILayout.DelayedIntField("Update File Cache Length", m_UpdateFileCacheLength.intValue);
-                    if (updateFileCacheLength != m_UpdateFileCacheLength.intValue)
-                    {
-                        if (EditorApplication.isPlaying)
-                        {
-                            t.UpdateFileCacheLength = updateFileCacheLength;
-                        }
-                        else
-                        {
-                            m_UpdateFileCacheLength.intValue = updateFileCacheLength;
-                        }
-                    }
-
-                    int generateReadWriteListLength = EditorGUILayout.DelayedIntField("Generate Read Write List Length", m_GenerateReadWriteListLength.intValue);
-                    if (generateReadWriteListLength != m_GenerateReadWriteListLength.intValue)
-                    {
-                        if (EditorApplication.isPlaying)
-                        {
-                            t.GenerateReadWriteListLength = generateReadWriteListLength;
-                        }
-                        else
-                        {
-                            m_GenerateReadWriteListLength.intValue = generateReadWriteListLength;
-                        }
-                    }
-
                     int updateRetryCount = EditorGUILayout.DelayedIntField("Update Retry Count", m_UpdateRetryCount.intValue);
                     if (updateRetryCount != m_UpdateRetryCount.intValue)
                     {
                         if (EditorApplication.isPlaying)
                         {
-                            t.UpdateRetryCount = updateRetryCount;
+                            t.UpdateRetryCount = resourceCapacity;
                         }
                         else
                         {
-                            m_UpdateRetryCount.intValue = updateRetryCount;
+                            m_UpdateRetryCount.intValue = resourceCapacity;
                         }
                     }
                 }
@@ -260,7 +231,7 @@ namespace UnityGameFramework.Editor
             }
             EditorGUI.EndDisabledGroup();
 
-            if (EditorApplication.isPlaying && IsPrefabInHierarchy(t.gameObject))
+            if (EditorApplication.isPlaying && PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
                 EditorGUILayout.LabelField("Read Only Path", t.ReadOnlyPath.ToString());
                 EditorGUILayout.LabelField("Read Write Path", t.ReadWritePath.ToString());
@@ -272,9 +243,7 @@ namespace UnityGameFramework.Editor
                 EditorGUILayout.LabelField("Resource Group Count", isEditorResourceMode ? "N/A" : t.ResourceGroupCount.ToString());
                 if (m_ResourceModeIndex == 1)
                 {
-                    EditorGUILayout.LabelField("Updating Resource Group", isEditorResourceMode ? "N/A" : t.UpdatingResourceGroup != null ? t.UpdatingResourceGroup.Name : "<Unknwon>");
                     EditorGUILayout.LabelField("Update Waiting Count", isEditorResourceMode ? "N/A" : t.UpdateWaitingCount.ToString());
-                    EditorGUILayout.LabelField("Update Candidate Count", isEditorResourceMode ? "N/A" : t.UpdateCandidateCount.ToString());
                     EditorGUILayout.LabelField("Updating Count", isEditorResourceMode ? "N/A" : t.UpdatingCount.ToString());
                 }
                 EditorGUILayout.LabelField("Load Total Agent Count", isEditorResourceMode ? "N/A" : t.LoadTotalAgentCount.ToString());
@@ -309,8 +278,6 @@ namespace UnityGameFramework.Editor
             m_ResourceExpireTime = serializedObject.FindProperty("m_ResourceExpireTime");
             m_ResourcePriority = serializedObject.FindProperty("m_ResourcePriority");
             m_UpdatePrefixUri = serializedObject.FindProperty("m_UpdatePrefixUri");
-            m_UpdateFileCacheLength = serializedObject.FindProperty("m_UpdateFileCacheLength");
-            m_GenerateReadWriteListLength = serializedObject.FindProperty("m_GenerateReadWriteListLength");
             m_UpdateRetryCount = serializedObject.FindProperty("m_UpdateRetryCount");
             m_InstanceRoot = serializedObject.FindProperty("m_InstanceRoot");
             m_LoadResourceAgentHelperCount = serializedObject.FindProperty("m_LoadResourceAgentHelperCount");

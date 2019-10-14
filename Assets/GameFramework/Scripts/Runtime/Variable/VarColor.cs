@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -20,6 +20,7 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         public VarColor()
         {
+
         }
 
         /// <summary>
@@ -29,6 +30,7 @@ namespace UnityGameFramework.Runtime
         public VarColor(Color value)
             : base(value)
         {
+
         }
 
         /// <summary>

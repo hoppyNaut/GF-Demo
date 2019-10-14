@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -8,7 +8,6 @@
 using GameFramework;
 using GameFramework.Localization;
 using GameFramework.Resource;
-using System.IO;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -20,8 +19,6 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Localization")]
     public sealed class LocalizationComponent : GameFrameworkComponent
     {
-        private const int DefaultPriority = 0;
-
         private ILocalizationManager m_LocalizationManager = null;
         private EventComponent m_EventComponent = null;
 
@@ -132,7 +129,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            localizationHelper.name = "Localization Helper";
+            localizationHelper.name = string.Format("Localization Helper");
             Transform transform = localizationHelper.transform;
             transform.SetParent(this.transform);
             transform.localScale = Vector3.one;
@@ -146,10 +143,9 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="dictionaryName">字典名称。</param>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        public void LoadDictionary(string dictionaryName, string dictionaryAssetName, LoadType loadType)
+        public void LoadDictionary(string dictionaryName, string dictionaryAssetName)
         {
-            LoadDictionary(dictionaryName, dictionaryAssetName, loadType, DefaultPriority, null);
+            LoadDictionary(dictionaryName, dictionaryAssetName, null);
         }
 
         /// <summary>
@@ -157,34 +153,8 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         /// <param name="dictionaryName">字典名称。</param>
         /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        /// <param name="priority">加载字典资源的优先级。</param>
-        public void LoadDictionary(string dictionaryName, string dictionaryAssetName, LoadType loadType, int priority)
-        {
-            LoadDictionary(dictionaryName, dictionaryAssetName, loadType, priority, null);
-        }
-
-        /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryName">字典名称。</param>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
         /// <param name="userData">用户自定义数据。</param>
-        public void LoadDictionary(string dictionaryName, string dictionaryAssetName, LoadType loadType, object userData)
-        {
-            LoadDictionary(dictionaryName, dictionaryAssetName, loadType, DefaultPriority, userData);
-        }
-
-        /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryName">字典名称。</param>
-        /// <param name="dictionaryAssetName">字典资源名称。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        /// <param name="priority">加载字典资源的优先级。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void LoadDictionary(string dictionaryName, string dictionaryAssetName, LoadType loadType, int priority, object userData)
+        public void LoadDictionary(string dictionaryName, string dictionaryAssetName, object userData)
         {
             if (string.IsNullOrEmpty(dictionaryName))
             {
@@ -192,7 +162,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            m_LocalizationManager.LoadDictionary(dictionaryAssetName, loadType, priority, new LoadDictionaryInfo(dictionaryName, userData));
+            m_LocalizationManager.LoadDictionary(dictionaryAssetName, new LoadDictionaryInfo(dictionaryName, userData));
         }
 
         /// <summary>
@@ -214,94 +184,6 @@ namespace UnityGameFramework.Runtime
         public bool ParseDictionary(string text, object userData)
         {
             return m_LocalizationManager.ParseDictionary(text, userData);
-        }
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="bytes">要解析的字典二进制流。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(byte[] bytes)
-        {
-            return m_LocalizationManager.ParseDictionary(bytes);
-        }
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="bytes">要解析的字典二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(byte[] bytes, object userData)
-        {
-            return m_LocalizationManager.ParseDictionary(bytes, userData);
-        }
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="stream">要解析的字典二进制流。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(Stream stream)
-        {
-            return m_LocalizationManager.ParseDictionary(stream);
-        }
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="stream">要解析的字典二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public bool ParseDictionary(Stream stream, object userData)
-        {
-            return m_LocalizationManager.ParseDictionary(stream, userData);
-        }
-
-        /// <summary>
-        /// 根据字典主键获取字典内容字符串。
-        /// </summary>
-        /// <param name="key">字典主键。</param>
-        /// <returns>要获取的字典内容字符串。</returns>
-        public string GetString(string key)
-        {
-            return m_LocalizationManager.GetString(key);
-        }
-
-        /// <summary>
-        /// 根据字典主键获取字典内容字符串。
-        /// </summary>
-        /// <param name="key">字典主键。</param>
-        /// <param name="arg0">字典参数 0。</param>
-        /// <returns>要获取的字典内容字符串。</returns>
-        public string GetString(string key, object arg0)
-        {
-            return m_LocalizationManager.GetString(key, arg0);
-        }
-
-        /// <summary>
-        /// 根据字典主键获取字典内容字符串。
-        /// </summary>
-        /// <param name="key">字典主键。</param>
-        /// <param name="arg0">字典参数 0。</param>
-        /// <param name="arg1">字典参数 1。</param>
-        /// <returns>要获取的字典内容字符串。</returns>
-        public string GetString(string key, object arg0, object arg1)
-        {
-            return m_LocalizationManager.GetString(key, arg0, arg1);
-        }
-
-        /// <summary>
-        /// 根据字典主键获取字典内容字符串。
-        /// </summary>
-        /// <param name="key">字典主键。</param>
-        /// <param name="arg0">字典参数 0。</param>
-        /// <param name="arg1">字典参数 1。</param>
-        /// <param name="arg2">字典参数 2。</param>
-        /// <returns>要获取的字典内容字符串。</returns>
-        public string GetString(string key, object arg0, object arg1, object arg2)
-        {
-            return m_LocalizationManager.GetString(key, arg0, arg1, arg2);
         }
 
         /// <summary>

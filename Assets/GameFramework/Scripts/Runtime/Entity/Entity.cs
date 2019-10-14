@@ -1,10 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework;
 using GameFramework.Entity;
 using System;
 using UnityEngine;
@@ -121,7 +122,7 @@ namespace UnityGameFramework.Runtime
             m_EntityLogic = gameObject.AddComponent(entityLogicType) as EntityLogic;
             if (m_EntityLogic == null)
             {
-                Log.Error("Entity '{0}' can not add entity logic.", entityAssetName);
+                Log.Error("Can not add entity logic.");
                 return;
             }
 

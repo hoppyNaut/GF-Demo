@@ -1,16 +1,15 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : GameFrameworkComponent
+    public partial class DebuggerComponent
     {
         private sealed class InputTouchInformationWindow : ScrollableDebuggerWindowBase
         {
@@ -32,7 +31,7 @@ namespace UnityGameFramework.Runtime
 
             private string GetTouchString(Touch touch)
             {
-                return Utility.Text.Format("{0}, {1}, {2}, {3}, {4}", touch.position.ToString(), touch.deltaPosition.ToString(), touch.rawPosition.ToString(), touch.pressure.ToString(), touch.phase.ToString());
+                return string.Format("{0}, {1}, {2}, {3}, {4}", touch.position.ToString(), touch.deltaPosition.ToString(), touch.rawPosition.ToString(), touch.pressure.ToString(), touch.phase.ToString());
             }
 
             private string GetTouchesString(Touch[] touches)

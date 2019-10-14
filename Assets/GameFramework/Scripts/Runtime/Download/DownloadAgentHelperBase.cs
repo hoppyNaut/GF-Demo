@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -17,14 +17,9 @@ namespace UnityGameFramework.Runtime
     public abstract class DownloadAgentHelperBase : MonoBehaviour, IDownloadAgentHelper
     {
         /// <summary>
-        /// 下载代理辅助器更新数据流事件。
+        /// 下载代理辅助器更新事件。
         /// </summary>
-        public abstract event EventHandler<DownloadAgentHelperUpdateBytesEventArgs> DownloadAgentHelperUpdateBytes;
-
-        /// <summary>
-        /// 下载代理辅助器更新数据大小事件。
-        /// </summary>
-        public abstract event EventHandler<DownloadAgentHelperUpdateLengthEventArgs> DownloadAgentHelperUpdateLength;
+        public abstract event EventHandler<DownloadAgentHelperUpdateEventArgs> DownloadAgentHelperUpdate;
 
         /// <summary>
         /// 下载代理辅助器完成事件。

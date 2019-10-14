@@ -293,6 +293,12 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="GameFramework">
+      <HintPath>Assets/GameFramework/Libraries/GameFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>Assets/GameFramework/Libraries/ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Advertisements">
       <HintPath>C:/Users/asus/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
     </Reference>
@@ -314,12 +320,6 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/asus/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
-    <Reference Include="GameFramework">
-      <HintPath>Assets/GameFramework/Libraries/GameFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>Assets/GameFramework/Libraries/ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>D:/Unity2017.3/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -335,7 +335,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleAnalyzer\AssetBundleAnalyzer.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleAnalyzer\AssetBundleAnalyzerController.CircularDependencyChecker.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleAnalyzer\AssetBundleAnalyzerController.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleAnalyzer\AssetBundleAnalyzerController.Stamp.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleAnalyzer\AssetsOrder.cs" />
@@ -351,7 +350,6 @@
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleBuilder\AssetBundleBuilderController.VersionListData.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleBuilder\BuildAssetBundle.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleBuilder\IBuildEventHandler.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleBuilder\Platform.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleCollection\Asset.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleCollection\AssetBundle.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleCollection\AssetBundleCollection.cs" />
@@ -367,42 +365,12 @@
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleEditor\AssetSorterType.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleEditor\SourceAsset.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\AssetBundleEditor\SourceFolder.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableCodeGenerator.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.BoolProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.ByteProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.CharProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.Color32Processor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.ColorProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.CommentProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.DataProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.DataProcessorUtility.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.DateTimeProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.DecimalProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.DoubleProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.FloatProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.GenericDataProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.IdProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.IntProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.LongProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.QuaternionProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.RectProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.SByteProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.ShortProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.StringProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.UIntProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.ULongProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.UShortProcessor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.Vector2Processor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.Vector3Processor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\DataTableProcessor\DataTableProcessor.Vector4Processor.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Inspector\BaseComponentInspector.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Inspector\ConfigComponentInspector.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Inspector\DataNodeComponentInspector.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Inspector\DataTableComponentInspector.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Inspector\DebuggerComponentInspector.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Inspector\DownloadComponentInspector.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\Inspector\EditorResourceComponentInspector.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Inspector\EntityComponentInspector.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Inspector\EventComponentInspector.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Inspector\FsmComponentInspector.cs" />
@@ -425,12 +393,11 @@
     <Compile Include="Assets\GameFramework\Scripts\Editor\Misc\Help.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Misc\HelperInfo.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Misc\LogRedirection.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\Misc\LogScriptingDefineSymbols.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Misc\OpenFolder.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Editor\Misc\ScriptingDefineSymbols.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Editor\Misc\Type.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Demo4\Hero2.txt" />
     <None Include="Assets\GameFramework\Libraries\GameFramework.xml" />
     <None Include="Assets\GameFramework\Libraries\link.xml" />
     <None Include="Assets\GameFramework\Scripts\Editor\UnityGameFramework.Editor.asmdef" />

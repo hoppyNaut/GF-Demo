@@ -293,6 +293,12 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="GameFramework">
+      <HintPath>Assets/GameFramework/Libraries/GameFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>Assets/GameFramework/Libraries/ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.Advertisements">
       <HintPath>C:/Users/asus/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.3/UnityEngine.Advertisements.dll</HintPath>
     </Reference>
@@ -314,12 +320,6 @@
     <Reference Include="UnityEngine.StandardEvents">
       <HintPath>C:/Users/asus/AppData/LocalLow/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
     </Reference>
-    <Reference Include="GameFramework">
-      <HintPath>Assets/GameFramework/Libraries/GameFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>Assets/GameFramework/Libraries/ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>D:/Unity2017.3/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -328,6 +328,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Base\AvoidJIT.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Base\BaseComponent.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Base\GameEntry.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Base\GameFrameworkComponent.cs" />
@@ -342,7 +343,6 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Config\LoadConfigSuccessEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Config\LoadConfigUpdateEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\DataNode\DataNodeComponent.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\DataTable\DataRowBase.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\DataTable\DataTableComponent.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\DataTable\DataTableHelperBase.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\DataTable\DefaultDataTableHelper.cs" />
@@ -353,6 +353,7 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\DataTable\LoadDataTableUpdateEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerActiveWindowType.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.ConsoleWindow.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.ConsoleWindow.LogNode.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.EnvironmentInformationWindow.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.FpsCounter.cs" />
@@ -363,7 +364,6 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.InputLocationInformationWindow.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.InputSummaryInformationWindow.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.InputTouchInformationWindow.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.LogNode.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.ObjectPoolInformationWindow.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.OperationsWindow.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.PathInformationWindow.cs" />
@@ -378,6 +378,7 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.SystemInformationWindow.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.TimeInformationWindow.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Debugger\DebuggerComponent.WebPlayerInformationWindow.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Download\DefaultDownloadAgentHelper.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Download\DownloadAgentHelperBase.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Download\DownloadComponent.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Download\DownloadFailureEventArgs.cs" />
@@ -385,8 +386,6 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Download\DownloadSuccessEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Download\DownloadUpdateEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Download\UnityWebRequestDownloadAgentHelper.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\Download\UnityWebRequestDownloadAgentHelper.DownloadHandler.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\Download\WWWDownloadAgentHelper.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Entity\AttachEntityInfo.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Entity\DefaultEntityGroupHelper.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Entity\DefaultEntityHelper.cs" />
@@ -418,6 +417,7 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Network\NetworkCustomErrorEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Network\NetworkErrorEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Network\NetworkMissHeartBeatEventArgs.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Network\NetworkSendPacketEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\ObjectPool\ObjectPoolComponent.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Procedure\ProcedureComponent.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\DefaultLoadResourceAgentHelper.cs" />
@@ -425,13 +425,18 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\EditorResourceComponent.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\LoadResourceAgentHelperBase.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\ReadWritePathType.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\ResourceCheckCompleteEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\ResourceComponent.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\ResourceHelperBase.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\ResourceInitCompleteEventArgs.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\ResourceUpdateAllCompleteEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\ResourceUpdateChangedEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\ResourceUpdateFailureEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\ResourceUpdateStartEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\ResourceUpdateSuccessEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\SceneAsset.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\VersionListUpdateFailureEventArgs.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Resource\VersionListUpdateSuccessEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Scene\LoadSceneDependencyAssetEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Scene\LoadSceneFailureEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Scene\LoadSceneSuccessEventArgs.cs" />
@@ -470,21 +475,18 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\UI\UIGroupHelperBase.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\UI\UIIntKey.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\UI\UIStringKey.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\DefaultJsonHelper.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\DefaultLogHelper.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\DefaultProfilerHelper.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\DefaultVersionHelper.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\DefaultZipHelper.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\Helper.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\Log.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\JsonHelper.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\LogHelper.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\ProfilerHelper.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\UnityExtension.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\Utility\ZipHelper.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarBool.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarByte.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarBytes.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarChar.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarChars.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarColor.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarColor32.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarDateTime.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarDecimal.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarDouble.cs" />
@@ -508,6 +510,7 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarVector2.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarVector3.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\Variable\VarVector4.cs" />
+    <Compile Include="Assets\GameFramework\Scripts\Runtime\WebRequest\DefaultWebRequestAgentHelper.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\WebRequest\UnityWebRequestAgentHelper.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\WebRequest\WebRequestAgentHelperBase.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\WebRequest\WebRequestComponent.cs" />
@@ -515,9 +518,9 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\WebRequest\WebRequestStartEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\WebRequest\WebRequestSuccessEventArgs.cs" />
     <Compile Include="Assets\GameFramework\Scripts\Runtime\WebRequest\WWWFormInfo.cs" />
-    <Compile Include="Assets\GameFramework\Scripts\Runtime\WebRequest\WWWWebRequestAgentHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Demo4\Hero2.txt" />
     <None Include="Assets\GameFramework\Libraries\GameFramework.xml" />
     <None Include="Assets\GameFramework\Libraries\link.xml" />
     <None Include="Assets\GameFramework\Scripts\Editor\UnityGameFramework.Editor.asmdef" />

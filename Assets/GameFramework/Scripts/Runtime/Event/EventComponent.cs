@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -22,24 +22,13 @@ namespace UnityGameFramework.Runtime
         private IEventManager m_EventManager = null;
 
         /// <summary>
-        /// 获取事件处理函数的数量。
-        /// </summary>
-        public int EventHandlerCount
-        {
-            get
-            {
-                return m_EventManager.EventHandlerCount;
-            }
-        }
-
-        /// <summary>
         /// 获取事件数量。
         /// </summary>
-        public int EventCount
+        public int Count
         {
             get
             {
-                return m_EventManager.EventCount;
+                return m_EventManager.Count;
             }
         }
 
@@ -60,24 +49,15 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
+
         }
 
         /// <summary>
-        /// 获取事件处理函数的数量。
+        /// 检查订阅事件处理回调函数。
         /// </summary>
         /// <param name="id">事件类型编号。</param>
-        /// <returns>事件处理函数的数量。</returns>
-        public int Count(int id)
-        {
-            return m_EventManager.Count(id);
-        }
-
-        /// <summary>
-        /// 检查是否存在事件处理函数。
-        /// </summary>
-        /// <param name="id">事件类型编号。</param>
-        /// <param name="handler">要检查的事件处理函数。</param>
-        /// <returns>是否存在事件处理函数。</returns>
+        /// <param name="handler">要检查的事件处理回调函数。</param>
+        /// <returns>是否存在事件处理回调函数。</returns>
         public bool Check(int id, EventHandler<GameEventArgs> handler)
         {
             return m_EventManager.Check(id, handler);
@@ -101,15 +81,6 @@ namespace UnityGameFramework.Runtime
         public void Unsubscribe(int id, EventHandler<GameEventArgs> handler)
         {
             m_EventManager.Unsubscribe(id, handler);
-        }
-
-        /// <summary>
-        /// 设置默认事件处理函数。
-        /// </summary>
-        /// <param name="handler">要设置的默认事件处理函数。</param>
-        public void SetDefaultHandler(EventHandler<GameEventArgs> handler)
-        {
-            m_EventManager.SetDefaultHandler(handler);
         }
 
         /// <summary>

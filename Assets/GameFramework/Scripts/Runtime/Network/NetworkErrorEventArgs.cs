@@ -1,13 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 using GameFramework.Event;
 using GameFramework.Network;
-using System.Net.Sockets;
 
 namespace UnityGameFramework.Runtime
 {
@@ -17,12 +16,12 @@ namespace UnityGameFramework.Runtime
     public sealed class NetworkErrorEventArgs : GameEventArgs
     {
         /// <summary>
-        /// 网络错误事件编号。
+        /// 连接错误事件编号。
         /// </summary>
         public static readonly int EventId = typeof(NetworkErrorEventArgs).GetHashCode();
 
         /// <summary>
-        /// 获取网络错误事件编号。
+        /// 获取连接错误事件编号。
         /// </summary>
         public override int Id
         {
@@ -45,15 +44,6 @@ namespace UnityGameFramework.Runtime
         /// 获取错误码。
         /// </summary>
         public NetworkErrorCode ErrorCode
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// 获取 Socket 错误码。
-        /// </summary>
-        public SocketError SocketErrorCode
         {
             get;
             private set;
@@ -87,7 +77,6 @@ namespace UnityGameFramework.Runtime
         {
             NetworkChannel = e.NetworkChannel;
             ErrorCode = e.ErrorCode;
-            SocketErrorCode = e.SocketErrorCode;
             ErrorMessage = e.ErrorMessage;
 
             return this;

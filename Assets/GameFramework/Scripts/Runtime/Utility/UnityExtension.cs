@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -56,20 +56,6 @@ public static class UnityExtension
     public static bool InScene(this GameObject gameObject)
     {
         return gameObject.scene.name != null;
-    }
-
-    /// <summary>
-    /// 递归设置游戏对象的层次。
-    /// </summary>
-    /// <param name="gameObject"><see cref="UnityEngine.GameObject" /> 对象。</param>
-    /// <param name="layer">目标层次的编号。</param>
-    public static void SetLayerRecursively(this GameObject gameObject, int layer)
-    {
-        Transform[] transforms = gameObject.GetComponentsInChildren<Transform>(true);
-        for (int i = 0; i < transforms.Length; i++)
-        {
-            transforms[i].gameObject.layer = layer;
-        }
     }
 
     /// <summary>
@@ -335,6 +321,20 @@ public static class UnityExtension
         if (vector.magnitude > 0f)
         {
             transform.rotation = Quaternion.LookRotation(vector.normalized, Vector3.up);
+        }
+    }
+
+    /// <summary>
+    /// 递归设置游戏对象的层次。
+    /// </summary>
+    /// <param name="transform"><see cref="UnityEngine.Transform" /> 对象。</param>
+    /// <param name="layer">目标层次的编号。</param>
+    public static void SetLayerRecursively(this Transform transform, int layer)
+    {
+        Transform[] transforms = transform.GetComponentsInChildren<Transform>(true);
+        for (int i = 0; i < transforms.Length; i++)
+        {
+            transforms[i].gameObject.layer = layer;
         }
     }
 

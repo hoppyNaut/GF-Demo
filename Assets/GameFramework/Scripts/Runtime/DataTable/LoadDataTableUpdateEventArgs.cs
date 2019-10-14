@@ -1,11 +1,10 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using GameFramework.Event;
 using System;
 
@@ -17,12 +16,12 @@ namespace UnityGameFramework.Runtime
     public sealed class LoadDataTableUpdateEventArgs : GameEventArgs
     {
         /// <summary>
-        /// 加载数据表更新事件编号。
+        /// 加载数据表失败事件编号。
         /// </summary>
         public static readonly int EventId = typeof(LoadDataTableUpdateEventArgs).GetHashCode();
 
         /// <summary>
-        /// 获取加载数据表更新事件编号。
+        /// 获取加载数据表失败事件编号。
         /// </summary>
         public override int Id
         {
@@ -60,15 +59,6 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取数据表加载方式。
-        /// </summary>
-        public LoadType LoadType
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// 获取加载数据表进度。
         /// </summary>
         public float Progress
@@ -94,7 +84,6 @@ namespace UnityGameFramework.Runtime
             DataRowType = default(Type);
             DataTableName = default(string);
             DataTableAssetName = default(string);
-            LoadType = default(LoadType);
             Progress = default(float);
             UserData = default(object);
         }
@@ -110,7 +99,6 @@ namespace UnityGameFramework.Runtime
             DataRowType = loadDataTableInfo.DataRowType;
             DataTableName = loadDataTableInfo.DataTableName;
             DataTableAssetName = e.DataTableAssetName;
-            LoadType = e.LoadType;
             Progress = e.Progress;
             UserData = loadDataTableInfo.UserData;
 

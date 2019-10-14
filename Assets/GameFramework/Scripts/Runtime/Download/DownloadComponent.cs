@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -18,9 +18,6 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Download")]
     public sealed class DownloadComponent : GameFrameworkComponent
     {
-        private const int DefaultPriority = 0;
-        private const int OneMegaBytes = 1024 * 1024;
-
         private IDownloadManager m_DownloadManager = null;
         private EventComponent m_EventComponent = null;
 
@@ -40,22 +37,7 @@ namespace UnityGameFramework.Runtime
         private float m_Timeout = 30f;
 
         [SerializeField]
-        private int m_FlushSize = OneMegaBytes;
-
-        /// <summary>
-        /// 获取或设置下载是否被暂停。
-        /// </summary>
-        public bool Paused
-        {
-            get
-            {
-                return m_DownloadManager.Paused;
-            }
-            set
-            {
-                m_DownloadManager.Paused = value;
-            }
-        }
+        private int m_FlushSize = 1024 * 1024;
 
         /// <summary>
         /// 获取下载代理总数量。
@@ -194,19 +176,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri)
         {
-            return AddDownload(downloadPath, downloadUri, DefaultPriority, null);
-        }
-
-        /// <summary>
-        /// 增加下载任务。
-        /// </summary>
-        /// <param name="downloadPath">下载后存放路径。</param>
-        /// <param name="downloadUri">原始下载地址。</param>
-        /// <param name="priority">下载任务的优先级。</param>
-        /// <returns>新增下载任务的序列编号。</returns>
-        public int AddDownload(string downloadPath, string downloadUri, int priority)
-        {
-            return AddDownload(downloadPath, downloadUri, priority, null);
+            return m_DownloadManager.AddDownload(downloadPath, downloadUri);
         }
 
         /// <summary>
@@ -218,20 +188,7 @@ namespace UnityGameFramework.Runtime
         /// <returns>新增下载任务的序列编号。</returns>
         public int AddDownload(string downloadPath, string downloadUri, object userData)
         {
-            return AddDownload(downloadPath, downloadUri, DefaultPriority, userData);
-        }
-
-        /// <summary>
-        /// 增加下载任务。
-        /// </summary>
-        /// <param name="downloadPath">下载后存放路径。</param>
-        /// <param name="downloadUri">原始下载地址。</param>
-        /// <param name="priority">下载任务的优先级。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>新增下载任务的序列编号。</returns>
-        public int AddDownload(string downloadPath, string downloadUri, int priority, object userData)
-        {
-            return m_DownloadManager.AddDownload(downloadPath, downloadUri, priority, userData);
+            return m_DownloadManager.AddDownload(downloadPath, downloadUri, userData);
         }
 
         /// <summary>
@@ -264,7 +221,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            downloadAgentHelper.name = Utility.Text.Format("Download Agent Helper - {0}", index.ToString());
+            downloadAgentHelper.name = string.Format("Download Agent Helper - {0}", index.ToString());
             Transform transform = downloadAgentHelper.transform;
             transform.SetParent(m_InstanceRoot);
             transform.localScale = Vector3.one;

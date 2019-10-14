@@ -1,15 +1,16 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 using System.Collections.Generic;
+using UnityEditor;
 
 namespace UnityGameFramework.Editor.AssetBundleTools
 {
-    public sealed partial class AssetBundleBuilderController
+    internal partial class AssetBundleBuilderController
     {
         private sealed class AssetBundleData
         {
@@ -17,17 +18,15 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             private readonly string m_Variant;
             private readonly AssetBundleLoadType m_LoadType;
             private readonly bool m_Packed;
-            private readonly string[] m_ResourceGroups;
             private readonly List<AssetData> m_AssetDatas;
             private readonly List<AssetBundleCode> m_Codes;
 
-            public AssetBundleData(string name, string variant, AssetBundleLoadType loadType, bool packed, string[] resourceGroups)
+            public AssetBundleData(string name, string variant, AssetBundleLoadType loadType, bool packed)
             {
                 m_Name = name;
                 m_Variant = variant;
                 m_LoadType = loadType;
                 m_Packed = packed;
-                m_ResourceGroups = resourceGroups;
                 m_AssetDatas = new List<AssetData>();
                 m_Codes = new List<AssetBundleCode>();
             }
@@ -72,11 +71,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 }
             }
 
-            public string[] GetResourceGroups()
-            {
-                return m_ResourceGroups;
-            }
-
             public string[] GetAssetNames()
             {
                 string[] assetNames = new string[m_AssetDatas.Count];
@@ -111,11 +105,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 m_AssetDatas.Add(new AssetData(guid, name, length, hashCode, dependencyAssetNames));
             }
 
-            public AssetBundleCode GetCode(Platform platform)
+            public AssetBundleCode GetCode(BuildTarget buildTarget)
             {
                 foreach (AssetBundleCode code in m_Codes)
                 {
-                    if (code.Platform == platform)
+                    if (code.BuildTarget == buildTarget)
                     {
                         return code;
                     }
@@ -129,9 +123,9 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 return m_Codes.ToArray();
             }
 
-            public void AddCode(Platform platform, int length, int hashCode, int zipLength, int zipHashCode)
+            public void AddCode(BuildTarget buildTarget, int length, int hashCode, int zipLength, int zipHashCode)
             {
-                m_Codes.Add(new AssetBundleCode(platform, length, hashCode, zipLength, zipHashCode));
+                m_Codes.Add(new AssetBundleCode(buildTarget, length, hashCode, zipLength, zipHashCode));
             }
         }
     }

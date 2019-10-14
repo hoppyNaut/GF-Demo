@@ -1,10 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework;
 using GameFramework.Entity;
 using UnityEngine;
 
@@ -57,7 +58,7 @@ namespace UnityGameFramework.Runtime
         public override void ReleaseEntity(object entityAsset, object entityInstance)
         {
             m_ResourceComponent.UnloadAsset(entityAsset);
-            Destroy((Object)entityInstance);
+            DestroyObject((Object)entityInstance);
         }
 
         private void Start()

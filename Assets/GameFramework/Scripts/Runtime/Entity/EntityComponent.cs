@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -10,7 +10,6 @@ using GameFramework.Entity;
 using GameFramework.ObjectPool;
 using GameFramework.Resource;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -22,12 +21,8 @@ namespace UnityGameFramework.Runtime
     [AddComponentMenu("Game Framework/Entity")]
     public sealed partial class EntityComponent : GameFrameworkComponent
     {
-        private const int DefaultPriority = 0;
-
         private IEntityManager m_EntityManager = null;
         private EventComponent m_EventComponent = null;
-
-        private readonly List<IEntity> m_InternalEntityResultsCache = new List<IEntity>();
 
         [SerializeField]
         private bool m_EnableShowEntitySuccessEvent = true;
@@ -139,7 +134,7 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            entityHelper.name = "Entity Helper";
+            entityHelper.name = string.Format("Entity Helper");
             Transform transform = entityHelper.transform;
             transform.SetParent(this.transform);
             transform.localScale = Vector3.one;
@@ -193,15 +188,6 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取所有实体组。
-        /// </summary>
-        /// <param name="results">所有实体组。</param>
-        public void GetAllEntityGroups(List<IEntityGroup> results)
-        {
-            m_EntityManager.GetAllEntityGroups(results);
-        }
-
-        /// <summary>
         /// 增加实体组。
         /// </summary>
         /// <param name="entityGroupName">实体组名称。</param>
@@ -224,7 +210,7 @@ namespace UnityGameFramework.Runtime
                 return false;
             }
 
-            entityGroupHelper.name = Utility.Text.Format("Entity Group - {0}", entityGroupName);
+            entityGroupHelper.name = string.Format("Entity Group - {0}", entityGroupName);
             Transform transform = entityGroupHelper.transform;
             transform.SetParent(m_InstanceRoot);
             transform.localScale = Vector3.one;
@@ -290,27 +276,6 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取实体。
-        /// </summary>
-        /// <param name="entityAssetName">实体资源名称。</param>
-        /// <param name="results">要获取的实体。</param>
-        public void GetEntities(string entityAssetName, List<Entity> results)
-        {
-            if (results == null)
-            {
-                Log.Error("Results is invalid.");
-                return;
-            }
-
-            results.Clear();
-            m_EntityManager.GetEntities(entityAssetName, m_InternalEntityResultsCache);
-            foreach (IEntity entity in m_InternalEntityResultsCache)
-            {
-                results.Add((Entity)entity);
-            }
-        }
-
-        /// <summary>
         /// 获取所有已加载的实体。
         /// </summary>
         /// <returns>所有已加载的实体。</returns>
@@ -327,41 +292,12 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取所有已加载的实体。
-        /// </summary>
-        /// <param name="results">所有已加载的实体。</param>
-        public void GetAllLoadedEntities(List<Entity> results)
-        {
-            if (results == null)
-            {
-                Log.Error("Results is invalid.");
-                return;
-            }
-
-            results.Clear();
-            m_EntityManager.GetAllLoadedEntities(m_InternalEntityResultsCache);
-            foreach (IEntity entity in m_InternalEntityResultsCache)
-            {
-                results.Add((Entity)entity);
-            }
-        }
-
-        /// <summary>
         /// 获取所有正在加载实体的编号。
         /// </summary>
         /// <returns>所有正在加载实体的编号。</returns>
         public int[] GetAllLoadingEntityIds()
         {
             return m_EntityManager.GetAllLoadingEntityIds();
-        }
-
-        /// <summary>
-        /// 获取所有正在加载实体的编号。
-        /// </summary>
-        /// <param name="results">所有正在加载实体的编号。</param>
-        public void GetAllLoadingEntityIds(List<int> results)
-        {
-            m_EntityManager.GetAllLoadingEntityIds(results);
         }
 
         /// <summary>
@@ -393,7 +329,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="entityGroupName">实体组名称。</param>
         public void ShowEntity<T>(int entityId, string entityAssetName, string entityGroupName) where T : EntityLogic
         {
-            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, DefaultPriority, null);
+            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, null);
         }
 
         /// <summary>
@@ -405,33 +341,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="entityGroupName">实体组名称。</param>
         public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName)
         {
-            ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, DefaultPriority, null);
-        }
-
-        /// <summary>
-        /// 显示实体。
-        /// </summary>
-        /// <typeparam name="T">实体逻辑类型。</typeparam>
-        /// <param name="entityId">实体编号。</param>
-        /// <param name="entityAssetName">实体资源名称。</param>
-        /// <param name="entityGroupName">实体组名称。</param>
-        /// <param name="priority">加载实体资源的优先级。</param>
-        public void ShowEntity<T>(int entityId, string entityAssetName, string entityGroupName, int priority) where T : EntityLogic
-        {
-            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, priority, null);
-        }
-
-        /// <summary>
-        /// 显示实体。
-        /// </summary>
-        /// <param name="entityId">实体编号。</param>
-        /// <param name="entityLogicType">实体逻辑类型。</param>
-        /// <param name="entityAssetName">实体资源名称。</param>
-        /// <param name="entityGroupName">实体组名称。</param>
-        /// <param name="priority">加载实体资源的优先级。</param>
-        public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, int priority)
-        {
-            ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, priority, null);
+            ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, null);
         }
 
         /// <summary>
@@ -444,7 +354,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void ShowEntity<T>(int entityId, string entityAssetName, string entityGroupName, object userData) where T : EntityLogic
         {
-            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, DefaultPriority, userData);
+            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, userData);
         }
 
         /// <summary>
@@ -457,41 +367,13 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, object userData)
         {
-            ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, DefaultPriority, userData);
-        }
-
-        /// <summary>
-        /// 显示实体。
-        /// </summary>
-        /// <typeparam name="T">实体逻辑类型。</typeparam>
-        /// <param name="entityId">实体编号。</param>
-        /// <param name="entityAssetName">实体资源名称。</param>
-        /// <param name="entityGroupName">实体组名称。</param>
-        /// <param name="priority">加载实体资源的优先级。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void ShowEntity<T>(int entityId, string entityAssetName, string entityGroupName, int priority, object userData) where T : EntityLogic
-        {
-            ShowEntity(entityId, typeof(T), entityAssetName, entityGroupName, priority, userData);
-        }
-
-        /// <summary>
-        /// 显示实体。
-        /// </summary>
-        /// <param name="entityId">实体编号。</param>
-        /// <param name="entityLogicType">实体逻辑类型。</param>
-        /// <param name="entityAssetName">实体资源名称。</param>
-        /// <param name="entityGroupName">实体组名称。</param>
-        /// <param name="priority">加载实体资源的优先级。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        public void ShowEntity(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, int priority, object userData)
-        {
             if (entityLogicType == null)
             {
                 Log.Error("Entity type is invalid.");
                 return;
             }
 
-            m_EntityManager.ShowEntity(entityId, entityAssetName, entityGroupName, priority, new ShowEntityInfo(entityLogicType, userData));
+            m_EntityManager.ShowEntity(entityId, entityAssetName, entityGroupName, new ShowEntityInfo(entityLogicType, userData));
         }
 
         /// <summary>
@@ -597,27 +479,6 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 获取子实体。
         /// </summary>
-        /// <param name="parentEntityId">要获取子实体的父实体的实体编号。</param>
-        /// <param name="results">子实体数组。</param>
-        public void GetChildEntities(int parentEntityId, List<IEntity> results)
-        {
-            if (results == null)
-            {
-                Log.Error("Results is invalid.");
-                return;
-            }
-
-            results.Clear();
-            m_EntityManager.GetChildEntities(parentEntityId, m_InternalEntityResultsCache);
-            foreach (IEntity entity in m_InternalEntityResultsCache)
-            {
-                results.Add((Entity)entity);
-            }
-        }
-
-        /// <summary>
-        /// 获取子实体。
-        /// </summary>
         /// <param name="parentEntity">要获取子实体的父实体。</param>
         /// <returns>子实体数组。</returns>
         public Entity[] GetChildEntities(Entity parentEntity)
@@ -630,27 +491,6 @@ namespace UnityGameFramework.Runtime
             }
 
             return entityImpls;
-        }
-
-        /// <summary>
-        /// 获取子实体。
-        /// </summary>
-        /// <param name="parentEntity">要获取子实体的父实体。</param>
-        /// <param name="results">子实体数组。</param>
-        public void GetChildEntities(IEntity parentEntity, List<IEntity> results)
-        {
-            if (results == null)
-            {
-                Log.Error("Results is invalid.");
-                return;
-            }
-
-            results.Clear();
-            m_EntityManager.GetChildEntities(parentEntity, m_InternalEntityResultsCache);
-            foreach (IEntity entity in m_InternalEntityResultsCache)
-            {
-                results.Add((Entity)entity);
-            }
         }
 
         /// <summary>
@@ -1042,49 +882,23 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 设置实体是否被加锁。
+        /// 设置实体实例是否被加锁。
         /// </summary>
         /// <param name="entity">实体。</param>
-        /// <param name="locked">实体是否被加锁。</param>
-        public void SetEntityInstanceLocked(Entity entity, bool locked)
+        /// <param name="locked">实体实例是否被加锁。</param>
+        public void SetInstanceLocked(Entity entity, bool locked)
         {
-            if (entity == null)
-            {
-                Log.Warning("Entity is invalid.");
-                return;
-            }
-
-            IEntityGroup entityGroup = entity.EntityGroup;
-            if (entityGroup == null)
-            {
-                Log.Warning("Entity group is invalid.");
-                return;
-            }
-
-            entityGroup.SetEntityInstanceLocked(entity.gameObject, locked);
+            m_EntityManager.SetInstanceLocked(entity, locked);
         }
 
         /// <summary>
-        /// 设置实体的优先级。
+        /// 设置实体实例的优先级。
         /// </summary>
         /// <param name="entity">实体。</param>
-        /// <param name="priority">实体优先级。</param>
+        /// <param name="priority">实体实例优先级。</param>
         public void SetInstancePriority(Entity entity, int priority)
         {
-            if (entity == null)
-            {
-                Log.Warning("Entity is invalid.");
-                return;
-            }
-
-            IEntityGroup entityGroup = entity.EntityGroup;
-            if (entityGroup == null)
-            {
-                Log.Warning("Entity group is invalid.");
-                return;
-            }
-
-            entityGroup.SetEntityInstancePriority(entity.gameObject, priority);
+            m_EntityManager.SetInstancePriority(entity, priority);
         }
 
         private void OnShowEntitySuccess(object sender, GameFramework.Entity.ShowEntitySuccessEventArgs e)
@@ -1097,7 +911,7 @@ namespace UnityGameFramework.Runtime
 
         private void OnShowEntityFailure(object sender, GameFramework.Entity.ShowEntityFailureEventArgs e)
         {
-            Log.Error("Show entity failure, entity id '{0}', asset name '{1}', entity group name '{2}', error message '{3}'.", e.EntityId.ToString(), e.EntityAssetName, e.EntityGroupName, e.ErrorMessage);
+            Log.Warning("Show entity failure, entity id '{0}', asset name '{1}', entity group name '{2}', error message '{3}'.", e.EntityId.ToString(), e.EntityAssetName, e.EntityGroupName, e.ErrorMessage);
             if (m_EnableShowEntityFailureEvent)
             {
                 m_EventComponent.Fire(this, ReferencePool.Acquire<ShowEntityFailureEventArgs>().Fill(e));

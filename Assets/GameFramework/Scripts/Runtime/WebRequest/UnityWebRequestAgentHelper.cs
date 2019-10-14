@@ -1,10 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v2.x
+// Copyright © 2014-2016 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework;
 using GameFramework.WebRequest;
 using System;
 #if UNITY_5_4_OR_NEWER

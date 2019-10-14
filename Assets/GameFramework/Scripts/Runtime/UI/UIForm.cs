@@ -1,10 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework;
 using GameFramework.UI;
 using UnityEngine;
 
@@ -133,7 +134,7 @@ namespace UnityGameFramework.Runtime
             m_UIFormLogic = GetComponent<UIFormLogic>();
             if (m_UIFormLogic == null)
             {
-                Log.Error("UI form '{0}' can not get UI form logic.", uiFormAssetName);
+                Log.Error("Can not get UI form logic.");
                 return;
             }
 

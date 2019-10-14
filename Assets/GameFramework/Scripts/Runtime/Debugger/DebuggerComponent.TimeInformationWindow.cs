@@ -1,16 +1,15 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : GameFrameworkComponent
+    public partial class DebuggerComponent
     {
         private sealed class TimeInformationWindow : ScrollableDebuggerWindowBase
         {
@@ -19,7 +18,7 @@ namespace UnityGameFramework.Runtime
                 GUILayout.Label("<b>Time Information</b>");
                 GUILayout.BeginVertical("box");
                 {
-                    DrawItem("Time Scale", Utility.Text.Format("{0} [{1}]", Time.timeScale.ToString(), GetTimeScaleDescription(Time.timeScale)));
+                    DrawItem("Time Scale", string.Format("{0} [{1}]", Time.timeScale.ToString(), GetTimeScaleDescription(Time.timeScale)));
                     DrawItem("Realtime Since Startup", Time.realtimeSinceStartup.ToString());
                     DrawItem("Time Since Level Load", Time.timeSinceLevelLoad.ToString());
                     DrawItem("Time", Time.time.ToString());

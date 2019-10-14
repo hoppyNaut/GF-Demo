@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -16,12 +16,12 @@ namespace UnityGameFramework.Runtime
     public sealed class NetworkMissHeartBeatEventArgs : GameEventArgs
     {
         /// <summary>
-        /// 网络心跳包丢失事件编号。
+        /// 心跳包丢失事件编号。
         /// </summary>
         public static readonly int EventId = typeof(NetworkMissHeartBeatEventArgs).GetHashCode();
 
         /// <summary>
-        /// 获取网络心跳包丢失事件编号。
+        /// 获取心跳包丢失事件编号。
         /// </summary>
         public override int Id
         {

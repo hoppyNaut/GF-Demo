@@ -1,11 +1,10 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using GameFramework.Network;
 using UnityEditor;
 using UnityEngine;
@@ -28,7 +27,7 @@ namespace UnityGameFramework.Editor
 
             NetworkComponent t = (NetworkComponent)target;
 
-            if (IsPrefabInHierarchy(t.gameObject))
+            if (PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
                 EditorGUILayout.LabelField("Network Channel Count", t.NetworkChannelCount.ToString());
 
@@ -44,6 +43,7 @@ namespace UnityGameFramework.Editor
 
         private void OnEnable()
         {
+
         }
 
         private void DrawNetworkChannel(INetworkChannel networkChannel)
@@ -52,12 +52,9 @@ namespace UnityGameFramework.Editor
             {
                 EditorGUILayout.LabelField(networkChannel.Name, networkChannel.Connected ? "Connected" : "Disconnected");
                 EditorGUILayout.LabelField("Network Type", networkChannel.NetworkType.ToString());
-                EditorGUILayout.LabelField("Local Address", networkChannel.Connected ? networkChannel.Socket.LocalEndPoint.ToString() : "Unavailable");
-                EditorGUILayout.LabelField("Remote Address", networkChannel.Connected ? networkChannel.Socket.RemoteEndPoint.ToString() : "Unavailable");
-                EditorGUILayout.LabelField("Send Packet", Utility.Text.Format("{0} / {1}", networkChannel.SendPacketCount.ToString(), networkChannel.SentPacketCount.ToString()));
-                EditorGUILayout.LabelField("Receive Packet", Utility.Text.Format("{0} / {1}", networkChannel.ReceivePacketCount.ToString(), networkChannel.ReceivedPacketCount.ToString()));
-                EditorGUILayout.LabelField("Miss Heart Beat Count", networkChannel.MissHeartBeatCount.ToString());
-                EditorGUILayout.LabelField("Heart Beat", Utility.Text.Format("{0} / {1}", networkChannel.HeartBeatElapseSeconds.ToString("F2"), networkChannel.HeartBeatInterval.ToString("F2")));
+                EditorGUILayout.LabelField("Local Address", networkChannel.Connected ? string.Format("{0}:{1}", networkChannel.LocalIPAddress.ToString(), networkChannel.LocalPort.ToString()) : "Unknown");
+                EditorGUILayout.LabelField("Remote Address", networkChannel.Connected ? string.Format("{0}:{1}", networkChannel.RemoteIPAddress.ToString(), networkChannel.RemotePort.ToString()) : "Unknown");
+                EditorGUILayout.LabelField("Heart Beat Interval", networkChannel.HeartBeatInterval.ToString());
                 EditorGUI.BeginDisabledGroup(!networkChannel.Connected);
                 {
                     if (GUILayout.Button("Disconnect"))

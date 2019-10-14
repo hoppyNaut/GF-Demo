@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -8,7 +8,6 @@
 using GameFramework;
 using GameFramework.Fsm;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -39,6 +38,7 @@ namespace UnityGameFramework.Runtime
 
         private void Start()
         {
+
         }
 
         /// <summary>
@@ -142,15 +142,6 @@ namespace UnityGameFramework.Runtime
         public FsmBase[] GetAllFsms()
         {
             return m_FsmManager.GetAllFsms();
-        }
-
-        /// <summary>
-        /// 获取所有有限状态机。
-        /// </summary>
-        /// <param name="results">所有有限状态机。</param>
-        public void GetAllFsms(List<FsmBase> results)
-        {
-            m_FsmManager.GetAllFsms(results);
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -8,8 +8,6 @@
 using GameFramework;
 using GameFramework.Localization;
 using System;
-using System.IO;
-using System.Text;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -19,8 +17,7 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public class DefaultLocalizationHelper : LocalizationHelperBase
     {
-        private static readonly string[] RowSplitSeparator = new string[] { "\r\n", "\r", "\n" };
-        private static readonly string[] ColumnSplitSeparator = new string[] { "\t" };
+        private static readonly string[] ColumnSplit = new string[] { "\t" };
         private const int ColumnCount = 4;
 
         private ResourceComponent m_ResourceComponent = null;
@@ -84,6 +81,31 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
+        /// 加载字典。
+        /// </summary>
+        /// <param name="dictionaryName">字典名称。</param>
+        /// <param name="dictionaryAsset">字典资源。</param>
+        /// <param name="userData">用户自定义数据。</param>
+        /// <returns>加载是否成功。</returns>
+        public override bool LoadDictionary(string dictionaryName, object dictionaryAsset, object userData)
+        {
+            TextAsset textAsset = dictionaryAsset as TextAsset;
+            if (textAsset == null)
+            {
+                Log.Warning("Dictionary asset '{0}' is invalid.", dictionaryName);
+                return false;
+            }
+
+            bool retVal = m_LocalizationManager.ParseDictionary(textAsset.text, userData);
+            if (!retVal)
+            {
+                Log.Warning("Dictionary asset '{0}' parse failure.", dictionaryName);
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
         /// 解析字典。
         /// </summary>
         /// <param name="text">要解析的字典文本。</param>
@@ -93,7 +115,7 @@ namespace UnityGameFramework.Runtime
         {
             try
             {
-                string[] rowTexts = text.Split(RowSplitSeparator, StringSplitOptions.None);
+                string[] rowTexts = Utility.Text.SplitToLines(text);
                 for (int i = 0; i < rowTexts.Length; i++)
                 {
                     if (rowTexts[i].Length <= 0 || rowTexts[i][0] == '#')
@@ -101,18 +123,18 @@ namespace UnityGameFramework.Runtime
                         continue;
                     }
 
-                    string[] splitLine = rowTexts[i].Split(ColumnSplitSeparator, StringSplitOptions.None);
+                    string[] splitLine = rowTexts[i].Split(ColumnSplit, StringSplitOptions.None);
                     if (splitLine.Length != ColumnCount)
                     {
                         Log.Warning("Can not parse dictionary '{0}'.", text);
                         return false;
                     }
 
-                    string dictionaryName = splitLine[1];
-                    string dictionaryValue = splitLine[3];
-                    if (!AddRawString(dictionaryName, dictionaryValue))
+                    string key = splitLine[1];
+                    string value = splitLine[3];
+                    if (!AddRawString(key, value))
                     {
-                        Log.Warning("Can not add raw string with key '{0}' which may be invalid or duplicate.", dictionaryName);
+                        Log.Warning("Can not add raw string with key '{0}' which may be invalid or duplicate.", key);
                         return false;
                     }
                 }
@@ -121,54 +143,7 @@ namespace UnityGameFramework.Runtime
             }
             catch (Exception exception)
             {
-                Log.Warning("Can not parse dictionary '{0}' with exception '{1}'.", text, exception.ToString());
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="bytes">要解析的字典二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public override bool ParseDictionary(byte[] bytes, object userData)
-        {
-            using (MemoryStream memoryStream = new MemoryStream(bytes, false))
-            {
-                return ParseDictionary(memoryStream, userData);
-            }
-        }
-
-        /// <summary>
-        /// 解析字典。
-        /// </summary>
-        /// <param name="stream">要解析的字典二进制流。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否解析字典成功。</returns>
-        public override bool ParseDictionary(Stream stream, object userData)
-        {
-            try
-            {
-                using (BinaryReader binaryReader = new BinaryReader(stream, Encoding.UTF8))
-                {
-                    while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length)
-                    {
-                        string dictionaryName = binaryReader.ReadString();
-                        string dictionaryValue = binaryReader.ReadString();
-                        if (!AddRawString(dictionaryName, dictionaryValue))
-                        {
-                            Log.Warning("Can not add raw string with config name '{0}' which may be invalid or duplicate.", dictionaryName);
-                            return false;
-                        }
-                    }
-                }
-
-                return true;
-            }
-            catch (Exception exception)
-            {
-                Log.Warning("Can not parse config with exception '{0}'.", exception.ToString());
+                Log.Warning("Can not parse dictionary '{0}' with exception '{1}'.", text, string.Format("{0}\n{1}", exception.Message, exception.StackTrace));
                 return false;
             }
         }
@@ -183,62 +158,14 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 加载字典。
-        /// </summary>
-        /// <param name="dictionaryName">字典名称。</param>
-        /// <param name="dictionaryAsset">字典资源。</param>
-        /// <param name="loadType">字典加载方式。</param>
-        /// <param name="userData">用户自定义数据。</param>
-        /// <returns>是否加载成功。</returns>
-        protected override bool LoadDictionary(string dictionaryName, object dictionaryAsset, LoadType loadType, object userData)
-        {
-            TextAsset textAsset = dictionaryAsset as TextAsset;
-            if (textAsset == null)
-            {
-                Log.Warning("Dictionary asset '{0}' is invalid.", dictionaryName);
-                return false;
-            }
-
-            bool retVal = false;
-            switch (loadType)
-            {
-                case LoadType.Text:
-                    retVal = m_LocalizationManager.ParseDictionary(textAsset.text, userData);
-                    break;
-
-                case LoadType.Bytes:
-                    retVal = m_LocalizationManager.ParseDictionary(textAsset.bytes, userData);
-                    break;
-
-                case LoadType.Stream:
-                    using (MemoryStream stream = new MemoryStream(textAsset.bytes, false))
-                    {
-                        retVal = m_LocalizationManager.ParseDictionary(stream, userData);
-                    }
-                    break;
-
-                default:
-                    Log.Warning("Unknown load type.");
-                    return false;
-            }
-
-            if (!retVal)
-            {
-                Log.Warning("Dictionary asset '{0}' parse failure.", dictionaryName);
-            }
-
-            return retVal;
-        }
-
-        /// <summary>
         /// 增加字典。
         /// </summary>
-        /// <param name="dictionaryKey">字典主键。</param>
-        /// <param name="dictionaryValue">字典内容。</param>
+        /// <param name="key">字典主键。</param>
+        /// <param name="value">字典内容。</param>
         /// <returns>是否增加字典成功。</returns>
-        protected bool AddRawString(string dictionaryKey, string dictionaryValue)
+        protected bool AddRawString(string key, string value)
         {
-            return m_LocalizationManager.AddRawString(dictionaryKey, dictionaryValue);
+            return m_LocalizationManager.AddRawString(key, value);
         }
 
         private void Start()

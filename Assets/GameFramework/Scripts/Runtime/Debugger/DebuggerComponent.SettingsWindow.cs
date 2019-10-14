@@ -1,15 +1,16 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : GameFrameworkComponent
+    public partial class DebuggerComponent
     {
         private sealed class SettingsWindow : ScrollableDebuggerWindowBase
         {
@@ -170,46 +171,11 @@ namespace UnityGameFramework.Runtime
                     }
                     GUILayout.EndHorizontal();
 
-                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button("Reset Window Settings", GUILayout.Height(30f)))
                     {
-                        if (GUILayout.Button("0.5x", GUILayout.Height(60f)))
-                        {
-                            m_DebuggerComponent.WindowScale = 0.5f;
-                        }
-                        if (GUILayout.Button("1.0x", GUILayout.Height(60f)))
-                        {
-                            m_DebuggerComponent.WindowScale = 1f;
-                        }
-                        if (GUILayout.Button("1.5x", GUILayout.Height(60f)))
-                        {
-                            m_DebuggerComponent.WindowScale = 1.5f;
-                        }
-                        if (GUILayout.Button("2.0x", GUILayout.Height(60f)))
-                        {
-                            m_DebuggerComponent.WindowScale = 2f;
-                        }
-                        if (GUILayout.Button("2.5x", GUILayout.Height(60f)))
-                        {
-                            m_DebuggerComponent.WindowScale = 2.5f;
-                        }
-                        if (GUILayout.Button("3.0x", GUILayout.Height(60f)))
-                        {
-                            m_DebuggerComponent.WindowScale = 3f;
-                        }
-                        if (GUILayout.Button("3.5x", GUILayout.Height(60f)))
-                        {
-                            m_DebuggerComponent.WindowScale = 3.5f;
-                        }
-                        if (GUILayout.Button("4.0x", GUILayout.Height(60f)))
-                        {
-                            m_DebuggerComponent.WindowScale = 4f;
-                        }
-                    }
-                    GUILayout.EndHorizontal();
-
-                    if (GUILayout.Button("Reset Layout", GUILayout.Height(30f)))
-                    {
-                        m_DebuggerComponent.ResetLayout();
+                        m_DebuggerComponent.IconRect = DefaultIconRect;
+                        m_DebuggerComponent.WindowRect = DefaultWindowRect;
+                        m_DebuggerComponent.WindowScale = DefaultWindowScale;
                     }
                 }
                 GUILayout.EndVertical();

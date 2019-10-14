@@ -1,23 +1,31 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 namespace UnityGameFramework.Editor.AssetBundleTools
 {
-    public sealed partial class AssetBundleAnalyzerController
+    internal sealed partial class AssetBundleAnalyzerController
     {
         private struct Stamp
         {
+            private readonly string m_AssetName;
             private readonly string m_HostAssetName;
-            private readonly string m_DependencyAssetName;
 
-            public Stamp(string hostAssetName, string dependencyAssetName)
+            public Stamp(string assetName, string hostAssetName)
             {
+                m_AssetName = assetName;
                 m_HostAssetName = hostAssetName;
-                m_DependencyAssetName = dependencyAssetName;
+            }
+
+            public string AssetName
+            {
+                get
+                {
+                    return m_AssetName;
+                }
             }
 
             public string HostAssetName
@@ -25,14 +33,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 get
                 {
                     return m_HostAssetName;
-                }
-            }
-
-            public string DependencyAssetName
-            {
-                get
-                {
-                    return m_DependencyAssetName;
                 }
             }
         }

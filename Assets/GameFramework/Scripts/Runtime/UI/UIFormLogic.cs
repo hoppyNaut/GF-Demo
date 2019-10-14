@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -14,10 +14,6 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public abstract class UIFormLogic : MonoBehaviour
     {
-        private bool m_Available = false;
-        private bool m_Visible = false;
-        private int m_OriginalLayer = 0;
-
         /// <summary>
         /// 获取界面。
         /// </summary>
@@ -47,38 +43,11 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 获取界面是否可用。
         /// </summary>
-        public bool Available
+        public bool IsAvailable
         {
             get
             {
-                return m_Available;
-            }
-        }
-
-        /// <summary>
-        /// 获取或设置界面是否可见。
-        /// </summary>
-        public bool Visible
-        {
-            get
-            {
-                return m_Available && m_Visible;
-            }
-            set
-            {
-                if (!m_Available)
-                {
-                    Log.Warning("UI form '{0}' is not available.", Name);
-                    return;
-                }
-
-                if (m_Visible == value)
-                {
-                    return;
-                }
-
-                m_Visible = value;
-                InternalSetVisible(value);
+                return gameObject.activeSelf;
             }
         }
 
@@ -101,8 +70,6 @@ namespace UnityGameFramework.Runtime
             {
                 CachedTransform = transform;
             }
-
-            m_OriginalLayer = gameObject.layer;
         }
 
         /// <summary>
@@ -111,8 +78,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnOpen(object userData)
         {
-            m_Available = true;
-            Visible = true;
+            gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -121,9 +87,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnClose(object userData)
         {
-            gameObject.SetLayerRecursively(m_OriginalLayer);
-            Visible = false;
-            m_Available = false;
+            gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -131,7 +95,7 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         protected internal virtual void OnPause()
         {
-            Visible = false;
+            gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -139,7 +103,7 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         protected internal virtual void OnResume()
         {
-            Visible = true;
+            gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -147,6 +111,7 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         protected internal virtual void OnCover()
         {
+
         }
 
         /// <summary>
@@ -154,6 +119,7 @@ namespace UnityGameFramework.Runtime
         /// </summary>
         protected internal virtual void OnReveal()
         {
+
         }
 
         /// <summary>
@@ -162,6 +128,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnRefocus(object userData)
         {
+
         }
 
         /// <summary>
@@ -171,6 +138,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         protected internal virtual void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
+
         }
 
         /// <summary>
@@ -180,15 +148,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="depthInUIGroup">界面在界面组中的深度。</param>
         protected internal virtual void OnDepthChanged(int uiGroupDepth, int depthInUIGroup)
         {
-        }
 
-        /// <summary>
-        /// 设置界面的可见性。
-        /// </summary>
-        /// <param name="visible">界面的可见性。</param>
-        protected virtual void InternalSetVisible(bool visible)
-        {
-            gameObject.SetActive(visible);
         }
     }
 }

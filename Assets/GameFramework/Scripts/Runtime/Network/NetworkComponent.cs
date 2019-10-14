@@ -1,13 +1,12 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 using GameFramework;
 using GameFramework.Network;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
@@ -17,7 +16,7 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Network")]
-    public sealed class NetworkComponent : GameFrameworkComponent
+    public sealed partial class NetworkComponent : GameFrameworkComponent
     {
         private INetworkManager m_NetworkManager = null;
         private EventComponent m_EventComponent = null;
@@ -49,6 +48,7 @@ namespace UnityGameFramework.Runtime
 
             m_NetworkManager.NetworkConnected += OnNetworkConnected;
             m_NetworkManager.NetworkClosed += OnNetworkClosed;
+            m_NetworkManager.NetworkSendPacket += OnNetworkSendPacket;
             m_NetworkManager.NetworkMissHeartBeat += OnNetworkMissHeartBeat;
             m_NetworkManager.NetworkError += OnNetworkError;
             m_NetworkManager.NetworkCustomError += OnNetworkCustomError;
@@ -94,15 +94,6 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取所有网络频道。
-        /// </summary>
-        /// <param name="results">所有网络频道。</param>
-        public void GetAllNetworkChannels(List<INetworkChannel> results)
-        {
-            m_NetworkManager.GetAllNetworkChannels(results);
-        }
-
-        /// <summary>
         /// 创建网络频道。
         /// </summary>
         /// <param name="name">网络频道名称。</param>
@@ -131,6 +122,11 @@ namespace UnityGameFramework.Runtime
         private void OnNetworkClosed(object sender, GameFramework.Network.NetworkClosedEventArgs e)
         {
             m_EventComponent.Fire(this, ReferencePool.Acquire<NetworkClosedEventArgs>().Fill(e));
+        }
+
+        private void OnNetworkSendPacket(object sender, GameFramework.Network.NetworkSendPacketEventArgs e)
+        {
+            m_EventComponent.Fire(this, ReferencePool.Acquire<NetworkSendPacketEventArgs>().Fill(e));
         }
 
         private void OnNetworkMissHeartBeat(object sender, GameFramework.Network.NetworkMissHeartBeatEventArgs e)

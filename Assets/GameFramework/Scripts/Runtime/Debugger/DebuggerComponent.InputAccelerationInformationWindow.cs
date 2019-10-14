@@ -1,16 +1,15 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : GameFrameworkComponent
+    public partial class DebuggerComponent
     {
         private sealed class InputAccelerationInformationWindow : ScrollableDebuggerWindowBase
         {
@@ -28,7 +27,7 @@ namespace UnityGameFramework.Runtime
 
             private string GetAccelerationEventString(AccelerationEvent accelerationEvent)
             {
-                return Utility.Text.Format("{0}, {1}", accelerationEvent.acceleration.ToString(), accelerationEvent.deltaTime.ToString());
+                return string.Format("{0}, {1}", accelerationEvent.acceleration.ToString(), accelerationEvent.deltaTime.ToString());
             }
 
             private string GetAccelerationEventsString(AccelerationEvent[] accelerationEvents)

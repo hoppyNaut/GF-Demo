@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -74,6 +74,7 @@ namespace UnityGameFramework.Editor
             }
             catch
             {
+
             }
         }
 
@@ -81,7 +82,7 @@ namespace UnityGameFramework.Editor
         /// 将构建场景设置为默认。
         /// </summary>
         [MenuItem("Game Framework/Scenes in Build Settings/Default Scenes", false, 20)]
-        public static void DefaultScenes()
+        private static void DefaultScenes()
         {
             HashSet<string> sceneNames = new HashSet<string>();
             foreach (string sceneName in s_DefaultSceneNames)
@@ -104,7 +105,7 @@ namespace UnityGameFramework.Editor
         /// 将构建场景设置为所有。
         /// </summary>
         [MenuItem("Game Framework/Scenes in Build Settings/All Scenes", false, 21)]
-        public static void AllScenes()
+        private static void AllScenes()
         {
             HashSet<string> sceneNames = new HashSet<string>();
             foreach (string sceneName in s_DefaultSceneNames)

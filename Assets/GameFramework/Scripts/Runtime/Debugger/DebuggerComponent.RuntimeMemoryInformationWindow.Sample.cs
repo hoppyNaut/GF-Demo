@@ -1,15 +1,15 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
 namespace UnityGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : GameFrameworkComponent
+    public partial class DebuggerComponent
     {
-        private sealed partial class RuntimeMemoryInformationWindow<T> : ScrollableDebuggerWindowBase where T : UnityEngine.Object
+        private sealed partial class RuntimeMemoryInformationWindow<T>
         {
             private sealed class Sample
             {

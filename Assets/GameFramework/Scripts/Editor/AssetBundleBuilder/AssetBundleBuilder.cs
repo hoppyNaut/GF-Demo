@@ -1,11 +1,10 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -21,11 +20,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         private bool m_OrderBuildAssetBundles = false;
         private int m_BuildEventHandlerTypeNameIndex = 0;
 
-        [MenuItem("Game Framework/AssetBundle Tools/AssetBundle Builder", false, 41)]
+        [MenuItem("Game Framework/AssetBundle Tools/AssetBundle Builder", false, 31)]
         private static void Open()
         {
             AssetBundleBuilder window = GetWindow<AssetBundleBuilder>(true, "AssetBundle Builder", true);
-            window.minSize = window.maxSize = new Vector2(700f, 570f);
+            window.minSize = window.maxSize = new Vector2(666f, 570f);
         }
 
         private void OnEnable()
@@ -112,33 +111,20 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 {
                     EditorGUILayout.BeginVertical();
                     {
-                        EditorGUILayout.LabelField("Platforms", EditorStyles.boldLabel);
-                        EditorGUILayout.BeginHorizontal("box");
+                        EditorGUILayout.LabelField("Build Target", EditorStyles.boldLabel);
+                        EditorGUILayout.BeginVertical("box");
                         {
-                            EditorGUILayout.BeginVertical();
-                            {
-                                DrawPlatform(Platform.Windows, "Microsoft Windows (x86)");
-                                DrawPlatform(Platform.Windows64, "Microsoft Windows (x64)");
-                                DrawPlatform(Platform.MacOS, "Apple macOS");
-                                DrawPlatform(Platform.Linux, "Linux (x86)");
-                                DrawPlatform(Platform.Linux64, "Linux (x64)");
-                                DrawPlatform(Platform.LinuxUniversal, "Linux (Universal)");
-                            }
-                            EditorGUILayout.EndVertical();
-                            EditorGUILayout.BeginVertical();
-                            {
-                                DrawPlatform(Platform.IOS, "Apple iOS");
-                                DrawPlatform(Platform.Android, "Google Android");
-                                DrawPlatform(Platform.WindowsStore, "Microsoft Windows Store");
-                                DrawPlatform(Platform.WebGL, "WebGL");
-                            }
-                            EditorGUILayout.EndVertical();
+                            m_Controller.WindowsSelected = EditorGUILayout.ToggleLeft("Microsoft Windows", m_Controller.WindowsSelected);
+                            m_Controller.MacOSXSelected = EditorGUILayout.ToggleLeft("Apple Mac OS X", m_Controller.MacOSXSelected);
+                            m_Controller.IOSSelected = EditorGUILayout.ToggleLeft("Apple iPhone/iPad", m_Controller.IOSSelected);
+                            m_Controller.AndroidSelected = EditorGUILayout.ToggleLeft("Google Android", m_Controller.AndroidSelected);
+                            m_Controller.WindowsStoreSelected = EditorGUILayout.ToggleLeft("Microsoft Windows Store", m_Controller.WindowsStoreSelected);
                         }
-                        EditorGUILayout.EndHorizontal();
+                        EditorGUILayout.EndVertical();
                         EditorGUILayout.BeginVertical();
                         {
                             m_Controller.ZipSelected = EditorGUILayout.ToggleLeft("Zip All AssetBundles", m_Controller.ZipSelected);
-                            //m_Controller.RecordScatteredDependencyAssetsSelected = EditorGUILayout.ToggleLeft("Record Scattered Dependency Assets", m_Controller.RecordScatteredDependencyAssetsSelected);
+                            m_Controller.RecordScatteredDependencyAssetsSelected = EditorGUILayout.ToggleLeft("Record Scattered Dependency Assets", m_Controller.RecordScatteredDependencyAssetsSelected);
                         }
                         EditorGUILayout.EndVertical();
                     }
@@ -239,7 +225,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     EditorGUILayout.BeginHorizontal();
                     {
                         EditorGUILayout.LabelField("Resource Version", GUILayout.Width(160f));
-                        GUILayout.Label(Utility.Text.Format("{0} ({1})", m_Controller.ApplicableGameVersion, m_Controller.InternalResourceVersion.ToString()));
+                        GUILayout.Label(string.Format("{0} ({1})", m_Controller.ApplicableGameVersion, m_Controller.InternalResourceVersion.ToString()));
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
@@ -260,29 +246,20 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
-                        EditorGUI.BeginDisabledGroup(!m_Controller.OutputPackageSelected);
                         EditorGUILayout.LabelField("Output Package Path", GUILayout.Width(160f));
                         GUILayout.Label(m_Controller.OutputPackagePath);
-                        EditorGUI.EndDisabledGroup();
-                        m_Controller.OutputPackageSelected = EditorGUILayout.ToggleLeft("Generate", m_Controller.OutputPackageSelected, GUILayout.Width(70f));
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
-                        EditorGUI.BeginDisabledGroup(!m_Controller.OutputFullSelected);
                         EditorGUILayout.LabelField("Output Full Path", GUILayout.Width(160f));
                         GUILayout.Label(m_Controller.OutputFullPath);
-                        EditorGUI.EndDisabledGroup();
-                        m_Controller.OutputFullSelected = EditorGUILayout.ToggleLeft("Generate", m_Controller.OutputFullSelected, GUILayout.Width(70f));
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
                     {
-                        EditorGUI.BeginDisabledGroup(!m_Controller.OutputPackedSelected);
                         EditorGUILayout.LabelField("Output Packed Path", GUILayout.Width(160f));
                         GUILayout.Label(m_Controller.OutputPackedPath);
-                        EditorGUI.EndDisabledGroup();
-                        m_Controller.OutputPackedSelected = EditorGUILayout.ToggleLeft("Generate", m_Controller.OutputPackedSelected, GUILayout.Width(70f));
                     }
                     EditorGUILayout.EndHorizontal();
                     EditorGUILayout.BeginHorizontal();
@@ -300,7 +277,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 GUILayout.Space(2f);
                 EditorGUILayout.BeginHorizontal();
                 {
-                    EditorGUI.BeginDisabledGroup(m_Controller.Platforms == Platform.Undefined || !m_Controller.IsValidOutputDirectory);
+                    EditorGUI.BeginDisabledGroup(!m_Controller.IsValidOutputDirectory);
                     {
                         if (GUILayout.Button("Start Build AssetBundles"))
                         {
@@ -369,13 +346,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
         private void GetBuildMessage(out string message, out MessageType messageType)
         {
-            if (m_Controller.Platforms == Platform.Undefined)
-            {
-                message = "Platform undefined.";
-                messageType = MessageType.Error;
-                return;
-            }
-
             if (!m_Controller.IsValidOutputDirectory)
             {
                 message = "Output directory is invalid.";
@@ -387,7 +357,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             messageType = MessageType.Info;
             if (Directory.Exists(m_Controller.OutputPackagePath))
             {
-                message += Utility.Text.Format("{0} will be overwritten.", m_Controller.OutputPackagePath);
+                message += string.Format("{0} will be overwritten.", m_Controller.OutputPackagePath);
                 messageType = MessageType.Warning;
             }
 
@@ -398,7 +368,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     message += " ";
                 }
 
-                message += Utility.Text.Format("{0} will be overwritten.", m_Controller.OutputFullPath);
+                message += string.Format("{0} will be overwritten.", m_Controller.OutputFullPath);
                 messageType = MessageType.Warning;
             }
 
@@ -409,7 +379,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     message += " ";
                 }
 
-                message += Utility.Text.Format("{0} will be overwritten.", m_Controller.OutputPackedPath);
+                message += string.Format("{0} will be overwritten.", m_Controller.OutputPackedPath);
                 messageType = MessageType.Warning;
             }
 
@@ -446,19 +416,14 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             }
         }
 
-        private void DrawPlatform(Platform platform, string platformName)
-        {
-            m_Controller.SelectPlatform(platform, EditorGUILayout.ToggleLeft(platformName, m_Controller.IsPlatformSelected(platform)));
-        }
-
         private void OnLoadingAssetBundle(int index, int count)
         {
-            EditorUtility.DisplayProgressBar("Loading AssetBundles", Utility.Text.Format("Loading AssetBundles, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
+            EditorUtility.DisplayProgressBar("Loading AssetBundles", string.Format("Loading AssetBundles, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
         }
 
         private void OnLoadingAsset(int index, int count)
         {
-            EditorUtility.DisplayProgressBar("Loading Assets", Utility.Text.Format("Loading assets, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
+            EditorUtility.DisplayProgressBar("Loading Assets", string.Format("Loading assets, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
         }
 
         private void OnLoadCompleted()
@@ -468,7 +433,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
         private void OnAnalyzingAsset(int index, int count)
         {
-            EditorUtility.DisplayProgressBar("Analyzing assets", Utility.Text.Format("Analyzing assets, {0}/{1} analyzed.", index.ToString(), count.ToString()), (float)index / count);
+            EditorUtility.DisplayProgressBar("Analyzing assets", string.Format("Analyzing assets, {0}/{1} analyzed.", index.ToString(), count.ToString()), (float)index / count);
         }
 
         private void OnAnalyzeCompleted()
@@ -478,7 +443,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
         private bool OnProcessingAssetBundle(string assetBundleName, float progress)
         {
-            if (EditorUtility.DisplayCancelableProgressBar("Processing AssetBundle", Utility.Text.Format("Processing '{0}'...", assetBundleName), progress))
+            if (EditorUtility.DisplayCancelableProgressBar("Processing AssetBundle", string.Format("Processing '{0}'...", assetBundleName), progress))
             {
                 EditorUtility.ClearProgressBar();
                 return true;
@@ -490,16 +455,16 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             }
         }
 
-        private void OnProcessAssetBundleComplete(Platform platform)
+        private void OnProcessAssetBundleComplete(BuildTarget buildTarget, string versionListPath, int versionListLength, int versionListHashCode, int versionListZipLength, int versionListZipHashCode)
         {
             EditorUtility.ClearProgressBar();
-            Debug.Log(Utility.Text.Format("Build AssetBundles for '{0}' complete.", platform.ToString()));
+            Debug.Log(string.Format("Build AssetBundles for '{0}' complete, version list path is '{1}', length is '{2}', hash code is '{3}', zip length is '{4}', zip hash code is '{5}'.", buildTarget.ToString(), versionListPath, versionListLength.ToString(), versionListHashCode.ToString("X8"), versionListZipLength.ToString(), versionListZipHashCode.ToString("X8")));
         }
 
         private void OnBuildAssetBundlesError(string errorMessage)
         {
             EditorUtility.ClearProgressBar();
-            Debug.LogWarning(Utility.Text.Format("Build AssetBundles error with error message '{0}'.", errorMessage));
+            Debug.LogWarning(string.Format("Build AssetBundles error with error message '{0}'.", errorMessage));
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -26,7 +26,7 @@ namespace UnityGameFramework.Editor
 
             DataNodeComponent t = (DataNodeComponent)target;
 
-            if (IsPrefabInHierarchy(t.gameObject))
+            if (PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
                 DrawDataNode(t.Root);
             }
@@ -36,6 +36,7 @@ namespace UnityGameFramework.Editor
 
         private void OnEnable()
         {
+
         }
 
         private void DrawDataNode(IDataNode dataNode)

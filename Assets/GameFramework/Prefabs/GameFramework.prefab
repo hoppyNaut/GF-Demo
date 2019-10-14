@@ -840,9 +840,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26ec20b78ec32048bfb6c0ff875d8cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LoadAssetCountPerFrame: 1
-  m_MinLoadAssetRandomDelaySeconds: 0
-  m_MaxLoadAssetRandomDelaySeconds: 0
 --- !u!114 &11472694
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -916,8 +913,6 @@ MonoBehaviour:
   m_ResourceExpireTime: 60
   m_ResourcePriority: 20000
   m_UpdatePrefixUri: 
-  m_UpdateFileCacheLength: 1048576
-  m_GenerateReadWriteListLength: 1048576
   m_UpdateRetryCount: 3
   m_InstanceRoot: {fileID: 0}
   m_ResourceHelperTypeName: UnityGameFramework.Runtime.DefaultResourceHelper
@@ -938,11 +933,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EditorResourceMode: 1
   m_EditorLanguage: 0
-  m_VersionHelperTypeName: UnityGameFramework.Runtime.DefaultVersionHelper
-  m_LogHelperTypeName: UnityGameFramework.Runtime.DefaultLogHelper
-  m_ZipHelperTypeName: UnityGameFramework.Runtime.DefaultZipHelper
-  m_JsonHelperTypeName: UnityGameFramework.Runtime.DefaultJsonHelper
-  m_ProfilerHelperTypeName: UnityGameFramework.Runtime.DefaultProfilerHelper
+  m_LogHelperTypeName: UnityGameFramework.Runtime.LogHelper
+  m_ZipHelperTypeName: UnityGameFramework.Runtime.ZipHelper
+  m_JsonHelperTypeName: UnityGameFramework.Runtime.JsonHelper
+  m_ProfilerHelperTypeName: UnityGameFramework.Runtime.ProfilerHelper
   m_FrameRate: 30
   m_GameSpeed: 1
   m_RunInBackground: 1

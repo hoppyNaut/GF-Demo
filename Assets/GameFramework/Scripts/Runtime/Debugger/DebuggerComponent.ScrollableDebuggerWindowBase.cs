@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : GameFrameworkComponent
+    public partial class DebuggerComponent
     {
         private abstract class ScrollableDebuggerWindowBase : IDebuggerWindow
         {
@@ -19,22 +19,27 @@ namespace UnityGameFramework.Runtime
 
             public virtual void Initialize(params object[] args)
             {
+
             }
 
             public virtual void Shutdown()
             {
+
             }
 
             public virtual void OnEnter()
             {
+
             }
 
             public virtual void OnLeave()
             {
+
             }
 
             public virtual void OnUpdate(float elapseSeconds, float realElapseSeconds)
             {
+
             }
 
             public void OnDraw()

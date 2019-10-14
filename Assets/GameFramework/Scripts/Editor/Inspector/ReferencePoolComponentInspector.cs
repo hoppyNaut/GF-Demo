@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -26,7 +26,7 @@ namespace UnityGameFramework.Editor
 
             ReferencePoolComponent t = (ReferencePoolComponent)target;
 
-            if (IsPrefabInHierarchy(t.gameObject))
+            if (PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
                 EditorGUILayout.LabelField("Reference Pool Count", ReferencePool.Count.ToString());
 
@@ -42,11 +42,12 @@ namespace UnityGameFramework.Editor
 
         private void OnEnable()
         {
+
         }
 
         private void DrawReferencePoolInfo(ReferencePoolInfo referencePoolInfo)
         {
-            EditorGUILayout.LabelField(referencePoolInfo.TypeName, Utility.Text.Format("[Unused]{0} [Using]{1} [Acquire]{2} [Release]{3} [Add]{4} [Remove]{5}", referencePoolInfo.UnusedReferenceCount.ToString(), referencePoolInfo.UsingReferenceCount.ToString(), referencePoolInfo.AcquireReferenceCount.ToString(), referencePoolInfo.ReleaseReferenceCount.ToString(), referencePoolInfo.AddReferenceCount.ToString(), referencePoolInfo.RemoveReferenceCount.ToString()));
+            EditorGUILayout.LabelField(referencePoolInfo.TypeName, string.Format("[Unused]{0} [Using]{1} [Acquire]{2} [Release]{3} [Add]{4} [Remove]{5}", referencePoolInfo.UnusedReferenceCount.ToString(), referencePoolInfo.UsingReferenceCount.ToString(), referencePoolInfo.AcquireReferenceCount.ToString(), referencePoolInfo.ReleaseReferenceCount.ToString(), referencePoolInfo.AddReferenceCount.ToString(), referencePoolInfo.RemoveReferenceCount.ToString()));
         }
     }
 }

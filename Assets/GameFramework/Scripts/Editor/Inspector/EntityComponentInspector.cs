@@ -1,12 +1,10 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
-using GameFramework.Entity;
 using UnityEditor;
 using UnityGameFramework.Runtime;
 
@@ -49,15 +47,10 @@ namespace UnityGameFramework.Editor
             }
             EditorGUI.EndDisabledGroup();
 
-            if (EditorApplication.isPlaying && IsPrefabInHierarchy(t.gameObject))
+            if (EditorApplication.isPlaying && PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
+                EditorGUILayout.LabelField("Entity Count", t.EntityCount.ToString());
                 EditorGUILayout.LabelField("Entity Group Count", t.EntityGroupCount.ToString());
-                EditorGUILayout.LabelField("Entity Count (Total)", t.EntityCount.ToString());
-                IEntityGroup[] entityGroups = t.GetAllEntityGroups();
-                foreach (IEntityGroup entityGroup in entityGroups)
-                {
-                    EditorGUILayout.LabelField(Utility.Text.Format("Entity Count ({0})", entityGroup.Name), entityGroup.EntityCount.ToString());
-                }
             }
 
             serializedObject.ApplyModifiedProperties();

@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace UnityGameFramework.Editor.AssetBundleTools
 {
-    public sealed class SourceFolder
+    internal sealed class SourceFolder
     {
         private static Texture s_CachedIcon = null;
 
@@ -44,7 +44,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         {
             get
             {
-                return Folder == null ? string.Empty : (Folder.Folder == null ? Name : Utility.Text.Format("{0}/{1}", Folder.FromRootPath, Name));
+                return Folder == null ? string.Empty : (Folder.Folder == null ? Name : string.Format("{0}/{1}", Folder.FromRootPath, Name));
             }
         }
 
@@ -160,7 +160,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             SourceAsset asset = GetAsset(name);
             if (asset != null)
             {
-                throw new GameFrameworkException(Utility.Text.Format("Source asset '{0}' is already exist.", name));
+                throw new GameFrameworkException(string.Format("Source asset '{0}' is already exist.", name));
             }
 
             asset = new SourceAsset(guid, path, name, this);

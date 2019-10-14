@@ -1,16 +1,15 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : GameFrameworkComponent
+    public partial class DebuggerComponent
     {
         private sealed class SystemInformationWindow : ScrollableDebuggerWindowBase
         {
@@ -25,8 +24,8 @@ namespace UnityGameFramework.Runtime
                     DrawItem("Device Model:", SystemInfo.deviceModel);
                     DrawItem("Processor Type:", SystemInfo.processorType);
                     DrawItem("Processor Count:", SystemInfo.processorCount.ToString());
-                    DrawItem("Processor Frequency:", Utility.Text.Format("{0} MHz", SystemInfo.processorFrequency.ToString()));
-                    DrawItem("System Memory Size:", Utility.Text.Format("{0} MB", SystemInfo.systemMemorySize.ToString()));
+                    DrawItem("Processor Frequency:", string.Format("{0} MHz", SystemInfo.processorFrequency.ToString()));
+                    DrawItem("Memory Size:", string.Format("{0} MB", SystemInfo.systemMemorySize.ToString()));
 #if UNITY_5_5_OR_NEWER
                     DrawItem("Operating System Family:", SystemInfo.operatingSystemFamily.ToString());
 #endif

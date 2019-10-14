@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -21,14 +21,6 @@ namespace UnityGameFramework.Runtime
         /// 获取当前是否正在播放。
         /// </summary>
         public abstract bool IsPlaying
-        {
-            get;
-        }
-
-        /// <summary>
-        /// 获取声音长度。
-        /// </summary>
-        public abstract float Length
         {
             get;
         }
@@ -115,15 +107,6 @@ namespace UnityGameFramework.Runtime
         }
 
         /// <summary>
-        /// 获取或设置声音多普勒等级。
-        /// </summary>
-        public abstract float DopplerLevel
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// 获取或设置声音代理辅助器所在的混音组。
         /// </summary>
         public abstract AudioMixerGroup AudioMixerGroup
@@ -170,7 +153,7 @@ namespace UnityGameFramework.Runtime
         /// 设置声音资源。
         /// </summary>
         /// <param name="soundAsset">声音资源。</param>
-        /// <returns>是否设置声音资源成功。</returns>
+        /// <returns>设置声音资源是否成功。</returns>
         public abstract bool SetSoundAsset(object soundAsset);
 
         /// <summary>

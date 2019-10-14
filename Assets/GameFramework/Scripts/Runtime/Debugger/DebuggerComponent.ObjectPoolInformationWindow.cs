@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : GameFrameworkComponent
+    public partial class DebuggerComponent
     {
         private sealed class ObjectPoolInformationWindow : ScrollableDebuggerWindowBase
         {
@@ -44,10 +44,9 @@ namespace UnityGameFramework.Runtime
 
             private void DrawObjectPool(ObjectPoolBase objectPool)
             {
-                GUILayout.Label(Utility.Text.Format("<b>Object Pool: {0}</b>", objectPool.FullName));
+                GUILayout.Label(string.Format("<b>Object Pool: {0}</b>", string.IsNullOrEmpty(objectPool.Name) ? "<Unnamed>" : objectPool.Name));
                 GUILayout.BeginVertical("box");
                 {
-                    DrawItem("Name", objectPool.Name);
                     DrawItem("Type", objectPool.ObjectType.FullName);
                     DrawItem("Auto Release Interval", objectPool.AutoReleaseInterval.ToString());
                     DrawItem("Capacity", objectPool.Capacity.ToString());
@@ -61,7 +60,6 @@ namespace UnityGameFramework.Runtime
                         GUILayout.Label("<b>Name</b>");
                         GUILayout.Label("<b>Locked</b>", GUILayout.Width(60f));
                         GUILayout.Label(objectPool.AllowMultiSpawn ? "<b>Count</b>" : "<b>In Use</b>", GUILayout.Width(60f));
-                        GUILayout.Label("<b>Flag</b>", GUILayout.Width(60f));
                         GUILayout.Label("<b>Priority</b>", GUILayout.Width(60f));
                         GUILayout.Label("<b>Last Use Time</b>", GUILayout.Width(120f));
                     }
@@ -76,7 +74,6 @@ namespace UnityGameFramework.Runtime
                                 GUILayout.Label(objectInfos[i].Name);
                                 GUILayout.Label(objectInfos[i].Locked.ToString(), GUILayout.Width(60f));
                                 GUILayout.Label(objectPool.AllowMultiSpawn ? objectInfos[i].SpawnCount.ToString() : objectInfos[i].IsInUse.ToString(), GUILayout.Width(60f));
-                                GUILayout.Label(objectInfos[i].CustomCanReleaseFlag.ToString(), GUILayout.Width(60f));
                                 GUILayout.Label(objectInfos[i].Priority.ToString(), GUILayout.Width(60f));
                                 GUILayout.Label(objectInfos[i].LastUseTime.ToString("yyyy-MM-dd HH:mm:ss"), GUILayout.Width(120f));
                             }

@@ -1,11 +1,10 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
-using GameFramework;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -44,7 +43,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         private int m_CurrentAssetBundleRowOnDraw = 0;
         private int m_CurrentSourceRowOnDraw = 0;
 
-        [MenuItem("Game Framework/AssetBundle Tools/AssetBundle Editor", false, 42)]
+        [MenuItem("Game Framework/AssetBundle Tools/AssetBundle Editor", false, 32)]
         private static void Open()
         {
             AssetBundleEditor window = GetWindow<AssetBundleEditor>(true, "AssetBundle Editor", true);
@@ -108,7 +107,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 EditorGUILayout.BeginVertical(GUILayout.Width(position.width * 0.25f));
                 {
                     GUILayout.Space(5f);
-                    EditorGUILayout.LabelField(Utility.Text.Format("AssetBundle List ({0})", m_Controller.AssetBundleCount.ToString()), EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(string.Format("AssetBundle List ({0})", m_Controller.AssetBundleCount.ToString()), EditorStyles.boldLabel);
                     EditorGUILayout.BeginHorizontal("box", GUILayout.Height(position.height - 52f));
                     {
                         DrawAssetBundlesView();
@@ -125,7 +124,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 EditorGUILayout.BeginVertical(GUILayout.Width(position.width * 0.25f));
                 {
                     GUILayout.Space(5f);
-                    EditorGUILayout.LabelField(Utility.Text.Format("AssetBundle Content ({0})", m_CurrentAssetBundleContentCount.ToString()), EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(string.Format("AssetBundle Content ({0})", m_CurrentAssetBundleContentCount.ToString()), EditorStyles.boldLabel);
                     EditorGUILayout.BeginHorizontal("box", GUILayout.Height(position.height - 52f));
                     {
                         DrawAssetBundleView();
@@ -240,15 +239,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 case MenuState.Normal:
                     DrawAssetBundlesMenu_Normal();
                     break;
-
                 case MenuState.Add:
                     DrawAssetBundlesMenu_Add();
                     break;
-
                 case MenuState.Rename:
                     DrawAssetBundlesMenu_Rename();
                     break;
-
                 case MenuState.Remove:
                     DrawAssetBundlesMenu_Remove();
                     break;
@@ -374,7 +370,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 return;
             }
 
-            GUILayout.Label(Utility.Text.Format("Remove '{0}' ?", m_SelectedAssetBundle.FullName));
+            GUILayout.Label(string.Format("Remove '{0}' ?", m_SelectedAssetBundle.FullName));
 
             if (GUILayout.Button("Yes", GUILayout.Width(50f)))
             {
@@ -447,7 +443,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             GUILayout.Label(string.Empty);
             EditorGUI.BeginDisabledGroup(m_SelectedAssetBundle == null || m_SelectedAssetsInSelectedAssetBundle.Count <= 0);
             {
-                if (GUILayout.Button(Utility.Text.Format("{0} >>", m_SelectedAssetsInSelectedAssetBundle.Count.ToString()), GUILayout.Width(80f)))
+                if (GUILayout.Button(string.Format("{0} >>", m_SelectedAssetsInSelectedAssetBundle.Count.ToString()), GUILayout.Width(80f)))
                 {
                     foreach (Asset asset in m_SelectedAssetsInSelectedAssetBundle)
                     {
@@ -475,7 +471,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             HashSet<SourceAsset> selectedSourceAssets = GetSelectedSourceAssets();
             EditorGUI.BeginDisabledGroup(m_SelectedAssetBundle == null || selectedSourceAssets.Count <= 0);
             {
-                if (GUILayout.Button(Utility.Text.Format("<< {0}", selectedSourceAssets.Count.ToString()), GUILayout.Width(80f)))
+                if (GUILayout.Button(string.Format("<< {0}", selectedSourceAssets.Count.ToString()), GUILayout.Width(80f)))
                 {
                     foreach (SourceAsset sourceAsset in selectedSourceAssets)
                     {
@@ -489,13 +485,13 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             EditorGUI.EndDisabledGroup();
             EditorGUI.BeginDisabledGroup(selectedSourceAssets.Count <= 0);
             {
-                if (GUILayout.Button(Utility.Text.Format("<<< {0}", selectedSourceAssets.Count.ToString()), GUILayout.Width(80f)))
+                if (GUILayout.Button(string.Format("<<< {0}", selectedSourceAssets.Count.ToString()), GUILayout.Width(80f)))
                 {
                     int index = 0;
                     int count = selectedSourceAssets.Count;
                     foreach (SourceAsset sourceAsset in selectedSourceAssets)
                     {
-                        EditorUtility.DisplayProgressBar("Add AssetBundles", Utility.Text.Format("{0}/{1} processing...", (++index).ToString(), count.ToString()), (float)index / count);
+                        EditorUtility.DisplayProgressBar("Add AssetBundles", string.Format("{0}/{1} processing...", (++index).ToString(), count.ToString()), (float)index / count);
                         int dotIndex = sourceAsset.FromRootPath.IndexOf('.');
                         string assetBundleName = dotIndex > 0 ? sourceAsset.FromRootPath.Substring(0, dotIndex) : sourceAsset.FromRootPath;
                         AddAssetBundle(assetBundleName, null, false);
@@ -653,12 +649,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                     RefreshAssetBundleTree();
                 }
 
-                Debug.Log(Utility.Text.Format("Add AssetBundle '{0}' success.", assetBundleFullName));
+                Debug.Log(string.Format("Add AssetBundle '{0}' success.", assetBundleFullName));
                 m_MenuState = MenuState.Normal;
             }
             else
             {
-                Debug.LogWarning(Utility.Text.Format("Add AssetBundle '{0}' failure.", assetBundleFullName));
+                Debug.LogWarning(string.Format("Add AssetBundle '{0}' failure.", assetBundleFullName));
             }
         }
 
@@ -680,12 +676,12 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             if (m_Controller.RenameAssetBundle(assetBundle.Name, assetBundle.Variant, newAssetBundleName, newAssetBundleVariant))
             {
                 RefreshAssetBundleTree();
-                Debug.Log(Utility.Text.Format("Rename AssetBundle '{0}' to '{1}' success.", oldAssetBundleFullName, newAssetBundleFullName));
+                Debug.Log(string.Format("Rename AssetBundle '{0}' to '{1}' success.", oldAssetBundleFullName, newAssetBundleFullName));
                 m_MenuState = MenuState.Normal;
             }
             else
             {
-                Debug.LogWarning(Utility.Text.Format("Rename AssetBundle '{0}' to '{1}' failure.", oldAssetBundleFullName, newAssetBundleFullName));
+                Debug.LogWarning(string.Format("Rename AssetBundle '{0}' to '{1}' failure.", oldAssetBundleFullName, newAssetBundleFullName));
             }
         }
 
@@ -696,11 +692,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             {
                 ChangeSelectedAssetBundle(null);
                 RefreshAssetBundleTree();
-                Debug.Log(Utility.Text.Format("Remove AssetBundle '{0}' success.", assetBundleFullName));
+                Debug.Log(string.Format("Remove AssetBundle '{0}' success.", assetBundleFullName));
             }
             else
             {
-                Debug.LogWarning(Utility.Text.Format("Remove AssetBundle '{0}' failure.", assetBundleFullName));
+                Debug.LogWarning(string.Format("Remove AssetBundle '{0}' failure.", assetBundleFullName));
             }
         }
 
@@ -709,11 +705,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             string assetBundleFullName = m_SelectedAssetBundle.FullName;
             if (m_Controller.SetAssetBundleLoadType(m_SelectedAssetBundle.Name, m_SelectedAssetBundle.Variant, loadType))
             {
-                Debug.Log(Utility.Text.Format("Set AssetBundle '{0}' load type to '{1}' success.", assetBundleFullName, loadType.ToString()));
+                Debug.Log(string.Format("Set AssetBundle '{0}' load type to '{1}' success.", assetBundleFullName, loadType.ToString()));
             }
             else
             {
-                Debug.LogWarning(Utility.Text.Format("Set AssetBundle '{0}' load type to '{1}' failure.", assetBundleFullName, loadType.ToString()));
+                Debug.LogWarning(string.Format("Set AssetBundle '{0}' load type to '{1}' failure.", assetBundleFullName, loadType.ToString()));
             }
         }
 
@@ -722,11 +718,11 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             string assetBundleFullName = m_SelectedAssetBundle.FullName;
             if (m_Controller.SetAssetBundlePacked(m_SelectedAssetBundle.Name, m_SelectedAssetBundle.Variant, pack))
             {
-                Debug.Log(Utility.Text.Format("{1} AssetBundle '{0}' success.", assetBundleFullName, pack ? "Pack" : "Unpack"));
+                Debug.Log(string.Format("{1} AssetBundle '{0}' success.", assetBundleFullName, pack ? "Pack" : "Unpack"));
             }
             else
             {
-                Debug.LogWarning(Utility.Text.Format("{1} AssetBundle '{0}' failure.", assetBundleFullName, pack ? "Pack" : "Unpack"));
+                Debug.LogWarning(string.Format("{1} AssetBundle '{0}' failure.", assetBundleFullName, pack ? "Pack" : "Unpack"));
             }
         }
 
@@ -734,7 +730,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         {
             if (!m_Controller.AssignAsset(sourceAsset.Guid, assetBundle.Name, assetBundle.Variant))
             {
-                Debug.LogWarning(Utility.Text.Format("Assign asset '{0}' to AssetBundle '{1}' failure.", sourceAsset.Name, assetBundle.FullName));
+                Debug.LogWarning(string.Format("Assign asset '{0}' to AssetBundle '{1}' failure.", sourceAsset.Name, assetBundle.FullName));
             }
         }
 
@@ -742,7 +738,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
         {
             if (!m_Controller.UnassignAsset(asset.Guid))
             {
-                Debug.LogWarning(Utility.Text.Format("Unassign asset '{0}' from AssetBundle '{1}' failure.", asset.Guid, m_SelectedAssetBundle.FullName));
+                Debug.LogWarning(string.Format("Unassign asset '{0}' from AssetBundle '{1}' failure.", asset.Guid, m_SelectedAssetBundle.FullName));
             }
         }
 
@@ -752,7 +748,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             int unusedAssetBundleCount = m_Controller.RemoveUnusedAssetBundles();
             RefreshAssetBundleTree();
 
-            Debug.Log(Utility.Text.Format("Clean complete, {0} unknown assets and {1} unused AssetBundles has been removed.", unknownAssetCount.ToString(), unusedAssetBundleCount.ToString()));
+            Debug.Log(string.Format("Clean complete, {0} unknown assets and {1} unused AssetBundles has been removed.", unknownAssetCount.ToString(), unusedAssetBundleCount.ToString()));
         }
 
         private void RefreshAssetBundleTree()
@@ -761,15 +757,15 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             AssetBundle[] assetBundles = m_Controller.GetAssetBundles();
             foreach (AssetBundle assetBundle in assetBundles)
             {
-                string[] splitPath = assetBundle.Name.Split('/');
+                string[] splitedPath = assetBundle.Name.Split('/');
                 AssetBundleFolder folder = m_AssetBundleRoot;
-                for (int i = 0; i < splitPath.Length - 1; i++)
+                for (int i = 0; i < splitedPath.Length - 1; i++)
                 {
-                    AssetBundleFolder subFolder = folder.GetFolder(splitPath[i]);
-                    folder = subFolder == null ? folder.AddFolder(splitPath[i]) : subFolder;
+                    AssetBundleFolder subFolder = folder.GetFolder(splitedPath[i]);
+                    folder = subFolder == null ? folder.AddFolder(splitedPath[i]) : subFolder;
                 }
 
-                string assetBundleFullName = assetBundle.Variant != null ? Utility.Text.Format("{0}.{1}", splitPath[splitPath.Length - 1], assetBundle.Variant) : splitPath[splitPath.Length - 1];
+                string assetBundleFullName = assetBundle.Variant != null ? string.Format("{0}.{1}", splitedPath[splitedPath.Length - 1], assetBundle.Variant) : splitedPath[splitedPath.Length - 1];
                 folder.AddItem(assetBundleFullName, assetBundle);
             }
         }
@@ -1018,17 +1014,17 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
         private string GetAssetBundleFullName(string assetBundleName, string assetBundleVariant)
         {
-            return assetBundleVariant != null ? Utility.Text.Format("{0}.{1}", assetBundleName, assetBundleVariant) : assetBundleName;
+            return assetBundleVariant != null ? string.Format("{0}.{1}", assetBundleName, assetBundleVariant) : assetBundleName;
         }
 
         private void OnLoadingAssetBundle(int index, int count)
         {
-            EditorUtility.DisplayProgressBar("Loading AssetBundles", Utility.Text.Format("Loading AssetBundles, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
+            EditorUtility.DisplayProgressBar("Loading AssetBundles", string.Format("Loading AssetBundles, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
         }
 
         private void OnLoadingAsset(int index, int count)
         {
-            EditorUtility.DisplayProgressBar("Loading Assets", Utility.Text.Format("Loading assets, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
+            EditorUtility.DisplayProgressBar("Loading Assets", string.Format("Loading assets, {0}/{1} loaded.", index.ToString(), count.ToString()), (float)index / count);
         }
 
         private void OnLoadCompleted()

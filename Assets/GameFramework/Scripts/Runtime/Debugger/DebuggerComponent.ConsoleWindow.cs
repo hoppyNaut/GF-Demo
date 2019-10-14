@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -13,20 +13,20 @@ using UnityEngine;
 
 namespace UnityGameFramework.Runtime
 {
-    public sealed partial class DebuggerComponent : GameFrameworkComponent
+    public partial class DebuggerComponent
     {
         [Serializable]
-        private sealed class ConsoleWindow : IDebuggerWindow
+        private sealed partial class ConsoleWindow : IDebuggerWindow
         {
             private SettingComponent m_SettingComponent = null;
-            private Queue<LogNode> m_LogNodes = new Queue<LogNode>();
+            private LinkedList<LogNode> m_Logs = new LinkedList<LogNode>();
             private Vector2 m_LogScrollPosition = Vector2.zero;
             private Vector2 m_StackScrollPosition = Vector2.zero;
             private int m_InfoCount = 0;
             private int m_WarningCount = 0;
             private int m_ErrorCount = 0;
             private int m_FatalCount = 0;
-            private LogNode m_SelectedNode = null;
+            private LinkedListNode<LogNode> m_SelectedNode = null;
             private bool m_LastLockScroll = true;
             private bool m_LastInfoFilter = true;
             private bool m_LastWarningFilter = true;
@@ -37,7 +37,7 @@ namespace UnityGameFramework.Runtime
             private bool m_LockScroll = true;
 
             [SerializeField]
-            private int m_MaxLine = 100;
+            private int m_MaxLine = 300;
 
             [SerializeField]
             private string m_DateTimeFormat = "[HH:mm:ss.fff] ";
@@ -255,10 +255,12 @@ namespace UnityGameFramework.Runtime
 
             public void OnEnter()
             {
+
             }
 
             public void OnLeave()
             {
+
             }
 
             public void OnUpdate(float elapseSeconds, float realElapseSeconds)
@@ -306,10 +308,10 @@ namespace UnityGameFramework.Runtime
                     }
                     m_LockScroll = GUILayout.Toggle(m_LockScroll, "Lock Scroll", GUILayout.Width(90f));
                     GUILayout.FlexibleSpace();
-                    m_InfoFilter = GUILayout.Toggle(m_InfoFilter, Utility.Text.Format("Info ({0})", m_InfoCount.ToString()), GUILayout.Width(90f));
-                    m_WarningFilter = GUILayout.Toggle(m_WarningFilter, Utility.Text.Format("Warning ({0})", m_WarningCount.ToString()), GUILayout.Width(90f));
-                    m_ErrorFilter = GUILayout.Toggle(m_ErrorFilter, Utility.Text.Format("Error ({0})", m_ErrorCount.ToString()), GUILayout.Width(90f));
-                    m_FatalFilter = GUILayout.Toggle(m_FatalFilter, Utility.Text.Format("Fatal ({0})", m_FatalCount.ToString()), GUILayout.Width(90f));
+                    m_InfoFilter = GUILayout.Toggle(m_InfoFilter, string.Format("Info ({0})", m_InfoCount.ToString()), GUILayout.Width(90f));
+                    m_WarningFilter = GUILayout.Toggle(m_WarningFilter, string.Format("Warning ({0})", m_WarningCount.ToString()), GUILayout.Width(90f));
+                    m_ErrorFilter = GUILayout.Toggle(m_ErrorFilter, string.Format("Error ({0})", m_ErrorCount.ToString()), GUILayout.Width(90f));
+                    m_FatalFilter = GUILayout.Toggle(m_FatalFilter, string.Format("Fatal ({0})", m_FatalCount.ToString()), GUILayout.Width(90f));
                 }
                 GUILayout.EndHorizontal();
 
@@ -323,9 +325,9 @@ namespace UnityGameFramework.Runtime
                     m_LogScrollPosition = GUILayout.BeginScrollView(m_LogScrollPosition);
                     {
                         bool selected = false;
-                        foreach (LogNode logNode in m_LogNodes)
+                        for (LinkedListNode<LogNode> i = m_Logs.First; i != null; i = i.Next)
                         {
-                            switch (logNode.LogType)
+                            switch (i.Value.LogType)
                             {
                                 case LogType.Log:
                                     if (!m_InfoFilter)
@@ -333,21 +335,18 @@ namespace UnityGameFramework.Runtime
                                         continue;
                                     }
                                     break;
-
                                 case LogType.Warning:
                                     if (!m_WarningFilter)
                                     {
                                         continue;
                                     }
                                     break;
-
                                 case LogType.Error:
                                     if (!m_ErrorFilter)
                                     {
                                         continue;
                                     }
                                     break;
-
                                 case LogType.Exception:
                                     if (!m_FatalFilter)
                                     {
@@ -355,12 +354,12 @@ namespace UnityGameFramework.Runtime
                                     }
                                     break;
                             }
-                            if (GUILayout.Toggle(m_SelectedNode == logNode, GetLogString(logNode)))
+                            if (GUILayout.Toggle(m_SelectedNode == i, GetLogString(i.Value)))
                             {
                                 selected = true;
-                                if (m_SelectedNode != logNode)
+                                if (m_SelectedNode != i)
                                 {
-                                    m_SelectedNode = logNode;
+                                    m_SelectedNode = i;
                                     m_StackScrollPosition = Vector2.zero;
                                 }
                             }
@@ -381,20 +380,17 @@ namespace UnityGameFramework.Runtime
                         if (m_SelectedNode != null)
                         {
                             GUILayout.BeginHorizontal();
-                            Color32 color = GetLogStringColor(m_SelectedNode.LogType);
-                            GUILayout.Label(Utility.Text.Format("<color=#{0}{1}{2}{3}><b>{4}</b></color>", color.r.ToString("x2"), color.g.ToString("x2"), color.b.ToString("x2"), color.a.ToString("x2"), m_SelectedNode.LogMessage));
+                            Color32 color = GetLogStringColor(m_SelectedNode.Value.LogType);
+                            GUILayout.Label(string.Format("<color=#{0}{1}{2}{3}><b>{4}</b></color>", color.r.ToString("x2"), color.g.ToString("x2"), color.b.ToString("x2"), color.a.ToString("x2"), m_SelectedNode.Value.LogMessage));
                             if (GUILayout.Button("COPY", GUILayout.Width(60f), GUILayout.Height(30f)))
                             {
-                                TextEditor textEditor = new TextEditor
-                                {
-                                    text = Utility.Text.Format("{0}{2}{2}{1}", m_SelectedNode.LogMessage, m_SelectedNode.StackTrack, Environment.NewLine)
-                                };
-
+                                TextEditor textEditor = new TextEditor();
+                                textEditor.text = string.Format("{0}\n\n{1}", m_SelectedNode.Value.LogMessage, m_SelectedNode.Value.StackTrack);
                                 textEditor.OnFocus();
                                 textEditor.Copy();
                             }
                             GUILayout.EndHorizontal();
-                            GUILayout.Label(m_SelectedNode.StackTrack);
+                            GUILayout.Label(m_SelectedNode.Value.StackTrack);
                         }
                         GUILayout.EndScrollView();
                     }
@@ -404,7 +400,7 @@ namespace UnityGameFramework.Runtime
 
             private void Clear()
             {
-                m_LogNodes.Clear();
+                m_Logs.Clear();
             }
 
             public void RefreshCount()
@@ -413,74 +409,23 @@ namespace UnityGameFramework.Runtime
                 m_WarningCount = 0;
                 m_ErrorCount = 0;
                 m_FatalCount = 0;
-                foreach (LogNode logNode in m_LogNodes)
+                for (LinkedListNode<LogNode> i = m_Logs.First; i != null; i = i.Next)
                 {
-                    switch (logNode.LogType)
+                    switch (i.Value.LogType)
                     {
                         case LogType.Log:
                             m_InfoCount++;
                             break;
-
                         case LogType.Warning:
                             m_WarningCount++;
                             break;
-
                         case LogType.Error:
                             m_ErrorCount++;
                             break;
-
                         case LogType.Exception:
                             m_FatalCount++;
                             break;
                     }
-                }
-            }
-
-            public void GetRecentLogs(List<LogNode> results)
-            {
-                if (results == null)
-                {
-                    Log.Error("Results is invalid.");
-                    return;
-                }
-
-                results.Clear();
-                foreach (LogNode logNode in m_LogNodes)
-                {
-                    results.Add(logNode);
-                }
-            }
-
-            public void GetRecentLogs(List<LogNode> results, int count)
-            {
-                if (results == null)
-                {
-                    Log.Error("Results is invalid.");
-                    return;
-                }
-
-                if (count <= 0)
-                {
-                    Log.Error("Count is invalid.");
-                    return;
-                }
-
-                int position = m_LogNodes.Count - count;
-                if (position < 0)
-                {
-                    position = 0;
-                }
-
-                int index = 0;
-                results.Clear();
-                foreach (LogNode logNode in m_LogNodes)
-                {
-                    if (index++ < position)
-                    {
-                        continue;
-                    }
-
-                    results.Add(logNode);
                 }
             }
 
@@ -491,17 +436,17 @@ namespace UnityGameFramework.Runtime
                     logType = LogType.Error;
                 }
 
-                m_LogNodes.Enqueue(ReferencePool.Acquire<LogNode>().Fill(logType, logMessage, stackTrace));
-                while (m_LogNodes.Count > m_MaxLine)
+                m_Logs.AddLast(new LogNode(logType, logMessage, stackTrace));
+                while (m_Logs.Count > m_MaxLine)
                 {
-                    ReferencePool.Release(m_LogNodes.Dequeue());
+                    m_Logs.RemoveFirst();
                 }
             }
 
             private string GetLogString(LogNode logNode)
             {
                 Color32 color = GetLogStringColor(logNode.LogType);
-                return Utility.Text.Format("<color=#{0}{1}{2}{3}>{4}{5}</color>",
+                return string.Format("<color=#{0}{1}{2}{3}>{4}{5}</color>",
                     color.r.ToString("x2"), color.g.ToString("x2"), color.b.ToString("x2"), color.a.ToString("x2"),
                     logNode.LogTime.ToString(m_DateTimeFormat), logNode.LogMessage);
             }
@@ -514,15 +459,12 @@ namespace UnityGameFramework.Runtime
                     case LogType.Log:
                         color = m_InfoColor;
                         break;
-
                     case LogType.Warning:
                         color = m_WarningColor;
                         break;
-
                     case LogType.Error:
                         color = m_ErrorColor;
                         break;
-
                     case LogType.Exception:
                         color = m_FatalColor;
                         break;

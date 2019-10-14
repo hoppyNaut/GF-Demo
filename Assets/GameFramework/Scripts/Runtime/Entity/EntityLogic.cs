@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -14,9 +14,6 @@ namespace UnityGameFramework.Runtime
     /// </summary>
     public abstract class EntityLogic : MonoBehaviour
     {
-        private bool m_Available = false;
-        private bool m_Visible = false;
-        private int m_OriginalLayer = 0;
         private Transform m_OriginalTransform = null;
 
         /// <summary>
@@ -48,38 +45,11 @@ namespace UnityGameFramework.Runtime
         /// <summary>
         /// 获取实体是否可用。
         /// </summary>
-        public bool Available
+        public bool IsAvailable
         {
             get
             {
-                return m_Available;
-            }
-        }
-
-        /// <summary>
-        /// 获取或设置实体是否可见。
-        /// </summary>
-        public bool Visible
-        {
-            get
-            {
-                return m_Available && m_Visible;
-            }
-            set
-            {
-                if (!m_Available)
-                {
-                    Log.Warning("Entity '{0}' is not available.", Name);
-                    return;
-                }
-
-                if (m_Visible == value)
-                {
-                    return;
-                }
-
-                m_Visible = value;
-                InternalSetVisible(value);
+                return gameObject.activeSelf;
             }
         }
 
@@ -103,7 +73,6 @@ namespace UnityGameFramework.Runtime
                 CachedTransform = transform;
             }
 
-            m_OriginalLayer = gameObject.layer;
             m_OriginalTransform = CachedTransform.parent;
         }
 
@@ -113,8 +82,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnShow(object userData)
         {
-            m_Available = true;
-            Visible = true;
+            gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -123,9 +91,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnHide(object userData)
         {
-            gameObject.SetLayerRecursively(m_OriginalLayer);
-            Visible = false;
-            m_Available = false;
+            gameObject.SetActive(false);
         }
 
         /// <summary>
@@ -136,6 +102,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnAttached(EntityLogic childEntity, Transform parentTransform, object userData)
         {
+
         }
 
         /// <summary>
@@ -145,6 +112,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="userData">用户自定义数据。</param>
         protected internal virtual void OnDetached(EntityLogic childEntity, object userData)
         {
+
         }
 
         /// <summary>
@@ -175,15 +143,7 @@ namespace UnityGameFramework.Runtime
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
         protected internal virtual void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
-        }
 
-        /// <summary>
-        /// 设置实体的可见性。
-        /// </summary>
-        /// <param name="visible">实体的可见性。</param>
-        protected virtual void InternalSetVisible(bool visible)
-        {
-            gameObject.SetActive(visible);
         }
     }
 }

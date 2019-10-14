@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -41,7 +41,7 @@ namespace UnityGameFramework.Editor
             }
             EditorGUI.EndDisabledGroup();
 
-            if (EditorApplication.isPlaying && IsPrefabInHierarchy(t.gameObject))
+            if (EditorApplication.isPlaying && PrefabUtility.GetPrefabType(t.gameObject) != PrefabType.Prefab)
             {
                 EditorGUILayout.LabelField("Data Table Count", t.Count.ToString());
 
@@ -78,7 +78,7 @@ namespace UnityGameFramework.Editor
 
         private void DrawDataTable(DataTableBase dataTable)
         {
-            EditorGUILayout.LabelField(Utility.Text.GetFullName(dataTable.Type, dataTable.Name), Utility.Text.Format("{0} Rows", dataTable.Count.ToString()));
+            EditorGUILayout.LabelField(Utility.Text.GetFullName(dataTable.Type, dataTable.Name), string.Format("{0} Rows", dataTable.Count.ToString()));
         }
 
         private void RefreshTypeNames()

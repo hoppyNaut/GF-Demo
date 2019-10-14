@@ -1,36 +1,38 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using UnityEditor;
+
 namespace UnityGameFramework.Editor.AssetBundleTools
 {
-    public sealed partial class AssetBundleBuilderController
+    internal partial class AssetBundleBuilderController
     {
         private sealed class AssetBundleCode
         {
-            private readonly Platform m_Platform;
+            private readonly BuildTarget m_BuildTarget;
             private readonly int m_Length;
             private readonly int m_HashCode;
             private readonly int m_ZipLength;
             private readonly int m_ZipHashCode;
 
-            public AssetBundleCode(Platform platform, int length, int hashCode, int zipLength, int zipHashCode)
+            public AssetBundleCode(BuildTarget buildTarget, int length, int hashCode, int zipLength, int zipHashCode)
             {
-                m_Platform = platform;
+                m_BuildTarget = buildTarget;
                 m_Length = length;
                 m_HashCode = hashCode;
                 m_ZipLength = zipLength;
                 m_ZipHashCode = zipHashCode;
             }
 
-            public Platform Platform
+            public BuildTarget BuildTarget
             {
                 get
                 {
-                    return m_Platform;
+                    return m_BuildTarget;
                 }
             }
 

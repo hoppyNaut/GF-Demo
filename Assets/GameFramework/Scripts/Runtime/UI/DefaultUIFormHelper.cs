@@ -1,10 +1,11 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
 
+using GameFramework;
 using GameFramework.UI;
 using UnityEngine;
 
@@ -58,7 +59,7 @@ namespace UnityGameFramework.Runtime
         public override void ReleaseUIForm(object uiFormAsset, object uiFormInstance)
         {
             m_ResourceComponent.UnloadAsset(uiFormAsset);
-            Destroy((Object)uiFormInstance);
+            DestroyObject((Object)uiFormInstance);
         }
 
         private void Start()

@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -40,7 +40,10 @@ namespace UnityGameFramework.Runtime
                 Log.Fatal("Setting manager is invalid.");
                 return;
             }
+        }
 
+        private void Start()
+        {
             SettingHelperBase settingHelper = Helper.CreateHelper(m_SettingHelperTypeName, m_CustomSettingHelper);
             if (settingHelper == null)
             {
@@ -48,16 +51,12 @@ namespace UnityGameFramework.Runtime
                 return;
             }
 
-            settingHelper.name = "Setting Helper";
+            settingHelper.name = string.Format("Setting Helper");
             Transform transform = settingHelper.transform;
             transform.SetParent(this.transform);
             transform.localScale = Vector3.one;
 
             m_SettingManager.SetSettingHelper(settingHelper);
-        }
-
-        private void Start()
-        {
         }
 
         /// <summary>

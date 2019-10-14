@@ -1,6 +1,6 @@
 ﻿//------------------------------------------------------------
-// Game Framework
-// Copyright © 2013-2019 Jiang Yin. All rights reserved.
+// Game Framework v3.x
+// Copyright © 2013-2018 Jiang Yin. All rights reserved.
 // Homepage: http://gameframework.cn/
 // Feedback: mailto:jiangyin@gameframework.cn
 //------------------------------------------------------------
@@ -15,7 +15,7 @@ using UnityEngine;
 
 namespace UnityGameFramework.Editor.AssetBundleTools
 {
-    public sealed class AssetBundleEditorController
+    internal sealed partial class AssetBundleEditorController
     {
         private const string DefaultSourceAssetRootPath = "Assets";
 
@@ -241,7 +241,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                         case "SourceAssetRootPath":
                             SourceAssetRootPath = xmlNode.InnerText;
                             break;
-
                         case "SourceAssetSearchPaths":
                             m_SourceAssetSearchRelativePaths.Clear();
                             XmlNodeList xmlNodeListInner = xmlNode.ChildNodes;
@@ -257,23 +256,18 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                                 m_SourceAssetSearchRelativePaths.Add(xmlNodeInner.Attributes.GetNamedItem("RelativePath").Value);
                             }
                             break;
-
                         case "SourceAssetUnionTypeFilter":
                             SourceAssetUnionTypeFilter = xmlNode.InnerText;
                             break;
-
                         case "SourceAssetUnionLabelFilter":
                             SourceAssetUnionLabelFilter = xmlNode.InnerText;
                             break;
-
                         case "SourceAssetExceptTypeFilter":
                             SourceAssetExceptTypeFilter = xmlNode.InnerText;
                             break;
-
                         case "SourceAssetExceptLabelFilter":
                             SourceAssetExceptLabelFilter = xmlNode.InnerText;
                             break;
-
                         case "AssetSorter":
                             AssetSorter = (AssetSorterType)Enum.Parse(typeof(AssetSorterType), xmlNode.InnerText);
                             break;
@@ -385,7 +379,7 @@ namespace UnityGameFramework.Editor.AssetBundleTools
 
         public bool AddAssetBundle(string assetBundleName, string assetBundleVariant, AssetBundleLoadType assetBundleLoadType, bool assetBundlePacked)
         {
-            return m_AssetBundleCollection.AddAssetBundle(assetBundleName, assetBundleVariant, assetBundleLoadType, assetBundlePacked, new string[0]);
+            return m_AssetBundleCollection.AddAssetBundle(assetBundleName, assetBundleVariant, assetBundleLoadType, assetBundlePacked);
         }
 
         public bool RenameAssetBundle(string oldAssetBundleName, string oldAssetBundleVariant, string newAssetBundleName, string newAssetBundleVariant)
@@ -449,11 +443,9 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 case AssetSorterType.Path:
                     assets.Sort(AssetPathComparer);
                     break;
-
                 case AssetSorterType.Name:
                     assets.Sort(AssetNameComparer);
                     break;
-
                 case AssetSorterType.Guid:
                     assets.Sort(AssetGuidComparer);
                     break;
@@ -513,18 +505,6 @@ namespace UnityGameFramework.Editor.AssetBundleTools
             return removeAssets.Count;
         }
 
-        public SourceAsset[] GetSourceAssets()
-        {
-            int count = 0;
-            SourceAsset[] sourceAssets = new SourceAsset[m_SourceAssets.Count];
-            foreach (KeyValuePair<string, SourceAsset> sourceAsset in m_SourceAssets)
-            {
-                sourceAssets[count++] = sourceAsset.Value;
-            }
-
-            return sourceAssets;
-        }
-
         public SourceAsset GetSourceAsset(string assetGuid)
         {
             if (string.IsNullOrEmpty(assetGuid))
@@ -564,15 +544,15 @@ namespace UnityGameFramework.Editor.AssetBundleTools
                 }
 
                 string assetPath = fullPath.Substring(SourceAssetRootPath.Length + 1);
-                string[] splitPath = assetPath.Split('/');
+                string[] splitedPath = assetPath.Split('/');
                 SourceFolder folder = m_SourceAssetRoot;
-                for (int i = 0; i < splitPath.Length - 1; i++)
+                for (int i = 0; i < splitedPath.Length - 1; i++)
                 {
-                    SourceFolder subFolder = folder.GetFolder(splitPath[i]);
-                    folder = subFolder == null ? folder.AddFolder(splitPath[i]) : subFolder;
+                    SourceFolder subFolder = folder.GetFolder(splitedPath[i]);
+                    folder = subFolder == null ? folder.AddFolder(splitedPath[i]) : subFolder;
                 }
 
-                SourceAsset asset = folder.AddAsset(assetGuid, fullPath, splitPath[splitPath.Length - 1]);
+                SourceAsset asset = folder.AddAsset(assetGuid, fullPath, splitedPath[splitedPath.Length - 1]);
                 m_SourceAssets.Add(asset.Guid, asset);
             }
         }
