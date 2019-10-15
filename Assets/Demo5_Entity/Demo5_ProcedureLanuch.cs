@@ -1,5 +1,5 @@
 ﻿/****************************************************
-    文件：Demo3_ProcedureLaunch.cs
+    文件：Demo5_ProcedureLanuch.cs
 	作者：Shen
     邮箱: 879085103@qq.com
     日期：#CreateTime#
@@ -7,22 +7,21 @@
 *****************************************************/
 
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using GameFramework;
 using GameFramework.Procedure;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
-public class Demo3_ProcedureLaunch : ProcedureBase 
+public class Demo5_ProcedureLanuch : ProcedureBase
 {
     protected override void OnEnter(ProcedureOwner procedureOwner)
     {
         base.OnEnter(procedureOwner);
-        SceneComponent scene = GameEntry.GetComponent<SceneComponent>();
-        //切换场景
-        scene.LoadScene("Assets/Demo3/Demo3_Menu.unity", this);
-        //切换流程
-        ChangeState<Demo3_ProcedureMenu>(procedureOwner);
+
+        //获取框架实体组件
+        EntityComponent entityComponent = GameEntry.GetComponent<EntityComponent>();
+
+        //创建实体
+        entityComponent.ShowEntity<Demo5_CubeEntityLogic>(1, "Assets/Demo5_Entity/CubeEntity.prefab", "EntityGroup");
     }
 }

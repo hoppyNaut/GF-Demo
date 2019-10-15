@@ -33,7 +33,7 @@ public class Demo3_ProcedureMenu:ProcedureBase
         //订阅UI加载成功事件
         Event.Subscribe(OpenUIFormSuccessEventArgs.EventId, OnOpenUIFormSuccess);
         //加载UI
-        UI.OpenUIForm("Assets/Demo3/UI_Menu.prefab", "MenuUIGroup",this);
+        UI.OpenUIForm("Assets/Demo3_UI/UI_Menu.prefab", "MenuUIGroup",this);
     }
 
     protected override void OnUpdate(ProcedureOwner procedureOwner, float elapseSeconds, float realElapseSeconds)
@@ -51,7 +51,7 @@ public class Demo3_ProcedureMenu:ProcedureBase
                 scene.UnloadScene(sceneName);
             }
             //加载新场景
-            scene.LoadScene("Assets/Demo3/Demo3_Game.unity", this);
+            scene.LoadScene("Assets/Demo3_UI/Demo3_Game.unity", this);
             //切换流程
             ChangeState<Demo3_ProcedureGame>(procedureOwner);
         }

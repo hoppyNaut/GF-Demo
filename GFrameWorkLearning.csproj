@@ -343,16 +343,18 @@
     <Compile Include="Assets\Demo2\Demo2_ProcedureGame.cs" />
     <Compile Include="Assets\Demo2\Demo2_ProcedureLaunch.cs" />
     <Compile Include="Assets\Demo2\Demo2_ProcedureMenu.cs" />
-    <Compile Include="Assets\Demo3\Demo3_ProcedureGame.cs" />
-    <Compile Include="Assets\Demo3\Demo3_ProcedureLaunch.cs" />
-    <Compile Include="Assets\Demo3\Demo3_ProcedureMenu.cs" />
-    <Compile Include="Assets\Demo3\Demo3_UIMenu.cs" />
-    <Compile Include="Assets\Demo4\Demo4_ProcedureLanuch.cs" />
-    <Compile Include="Assets\Demo4\DRHero.cs" />
+    <Compile Include="Assets\Demo3_UI\Demo3_ProcedureGame.cs" />
+    <Compile Include="Assets\Demo3_UI\Demo3_ProcedureLaunch.cs" />
+    <Compile Include="Assets\Demo3_UI\Demo3_ProcedureMenu.cs" />
+    <Compile Include="Assets\Demo3_UI\Demo3_UIMenu.cs" />
+    <Compile Include="Assets\Demo4_DataTable\Demo4_ProcedureLanuch.cs" />
+    <Compile Include="Assets\Demo4_DataTable\DRHero.cs" />
+    <Compile Include="Assets\Demo5_Entity\Demo5_CubeEntityLogic.cs" />
+    <Compile Include="Assets\Demo5_Entity\Demo5_ProcedureLanuch.cs" />
     <Compile Include="Assets\Example\ProcedureExample.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Demo4\Hero2.txt" />
+    <None Include="Assets\Demo4_DataTable\Hero2.txt" />
     <None Include="Assets\GameFramework\Libraries\GameFramework.xml" />
     <None Include="Assets\GameFramework\Libraries\link.xml" />
     <None Include="Assets\GameFramework\Scripts\Editor\UnityGameFramework.Editor.asmdef" />

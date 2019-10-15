@@ -25,7 +25,7 @@ public class Demo4_ProcedureLanuch : ProcedureBase
         DataTableComponent DataTable = GameEntry.GetComponent<DataTableComponent>();
         //订阅数据表加载成功事件
         Event.Subscribe(UnityGameFramework.Runtime.LoadDataTableSuccessEventArgs.EventId, OnLoadDataTableSuccess);
-        DataTable.LoadDataTable<DRHero>("Hero", "Assets/Demo4/Hero2.txt");
+        DataTable.LoadDataTable<DRHero>("Hero", "Assets/Demo4_DataTable/Hero2.txt");
     }
 
     private void OnLoadDataTableSuccess(object sender, GameEventArgs e)

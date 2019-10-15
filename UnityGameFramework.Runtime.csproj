@@ -520,7 +520,7 @@
     <Compile Include="Assets\GameFramework\Scripts\Runtime\WebRequest\WWWFormInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Demo4\Hero2.txt" />
+    <None Include="Assets\Demo4_DataTable\Hero2.txt" />
     <None Include="Assets\GameFramework\Libraries\GameFramework.xml" />
     <None Include="Assets\GameFramework\Libraries\link.xml" />
     <None Include="Assets\GameFramework\Scripts\Editor\UnityGameFramework.Editor.asmdef" />

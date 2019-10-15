@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Demo4/Demo4_Lanuch.unity
+- path: Assets/Demo5_Entity/Demo5_Lanuch.unity
   isLoaded: 1
   isActive: 1
